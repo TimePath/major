@@ -1,0 +1,36 @@
+import "google/protobuf/csharp_options.proto";
+
+// One of: SPEED, CODE_SIZE, LITE_RUNTIME
+option optimize_for = SPEED;
+
+// Namespace/Package options
+
+option java_package = "com.timepath.major.proto";
+
+option (google.protobuf.csharp_file_options).namespace = "Major.Proto";
+
+option (google.protobuf.csharp_file_options).expand_namespace_directories = true;
+
+// Filename options
+
+option java_outer_classname = "Files";
+
+option (google.protobuf.csharp_file_options).umbrella_classname = "Files";
+
+// Messages
+
+message File {
+    required string name = 1;
+    optional string body = 2;
+
+    enum FileType {
+        FILE = 0;
+        DIRECTORY = 1;
+    }
+
+    optional FileType type = 3 [default = FILE];
+}
+
+message FileListing {
+    repeated File file = 1;
+}

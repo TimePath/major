@@ -1,0 +1,10 @@
+/target/
+/.idea/
+/*.iml
+
+/bin/
+/Google.ProtocolBuffers*
+/src/main/protos/google
+/src/main/protos/tutorial
+/lib
+/tools
