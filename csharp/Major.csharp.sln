@@ -1,15 +1,21 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GUI", "..\..\..\Projects\personal\major\csharp\GUI\GUI.csproj", "{782005D2-14CC-479E-ABC7-7777DE1F70EB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GUI.Core", "GUI\GUI.Core.csproj", "{782005D2-14CC-479E-ABC7-7777DE1F70EB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GUI.WinForms", "GUI\WinForms\GUI.WinForms.csproj", "{1720FC81-884D-4583-8330-EC5EDE126973}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GUI.GTK", "GUI\GTK\GUI.GTK.csproj", "{98BE9542-38E1-47DF-B556-4A4FE5E8E928}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Net.Client", "..\..\..\Projects\personal\major\csharp\Net\Client\Net.Client.csproj", "{46B4C44B-DE78-4A2D-BF46-E5697AB1AE58}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Net.Client", "Net\Client\Net.Client.csproj", "{46B4C44B-DE78-4A2D-BF46-E5697AB1AE58}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DokanNet", "Lib\DokanNet\DokanNet\DokanNet.csproj", "{A09B408A-26A0-4FF8-83D5-6E1B1DA5F63C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DokanNet", "FS\Lib\dokan\dokan_net\DokanNet\DokanNet.csproj", "{A09B408A-26A0-4FF8-83D5-6E1B1DA5F63C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FS.Core", "FS\FS.Core.csproj", "{F14FD851-5657-4819-9EC1-64E6EBA36218}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FS.Dokan", "FS\Consumers\Dokan\FS.Dokan.csproj", "{FE95AD95-8CEF-4AEB-8F1B-E1713DC9489C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FS.Memory", "FS\Producers\Memory\FS.Memory.csproj", "{07F9DBE1-5D4B-4A0B-8DE6-8936626EDCCE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,6 +23,10 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{07F9DBE1-5D4B-4A0B-8DE6-8936626EDCCE}.Debug|x86.ActiveCfg = Debug|x86
+		{07F9DBE1-5D4B-4A0B-8DE6-8936626EDCCE}.Debug|x86.Build.0 = Debug|x86
+		{07F9DBE1-5D4B-4A0B-8DE6-8936626EDCCE}.Release|x86.ActiveCfg = Release|x86
+		{07F9DBE1-5D4B-4A0B-8DE6-8936626EDCCE}.Release|x86.Build.0 = Release|x86
 		{1720FC81-884D-4583-8330-EC5EDE126973}.Debug|x86.ActiveCfg = Debug|x86
 		{1720FC81-884D-4583-8330-EC5EDE126973}.Debug|x86.Build.0 = Debug|x86
 		{1720FC81-884D-4583-8330-EC5EDE126973}.Release|x86.ActiveCfg = Release|x86
@@ -37,8 +47,16 @@ Global
 		{A09B408A-26A0-4FF8-83D5-6E1B1DA5F63C}.Debug|x86.Build.0 = Debug|x86
 		{A09B408A-26A0-4FF8-83D5-6E1B1DA5F63C}.Release|x86.ActiveCfg = Release|x86
 		{A09B408A-26A0-4FF8-83D5-6E1B1DA5F63C}.Release|x86.Build.0 = Release|x86
+		{F14FD851-5657-4819-9EC1-64E6EBA36218}.Debug|x86.ActiveCfg = Debug|x86
+		{F14FD851-5657-4819-9EC1-64E6EBA36218}.Debug|x86.Build.0 = Debug|x86
+		{F14FD851-5657-4819-9EC1-64E6EBA36218}.Release|x86.ActiveCfg = Release|x86
+		{F14FD851-5657-4819-9EC1-64E6EBA36218}.Release|x86.Build.0 = Release|x86
+		{FE95AD95-8CEF-4AEB-8F1B-E1713DC9489C}.Debug|x86.ActiveCfg = Debug|x86
+		{FE95AD95-8CEF-4AEB-8F1B-E1713DC9489C}.Debug|x86.Build.0 = Debug|x86
+		{FE95AD95-8CEF-4AEB-8F1B-E1713DC9489C}.Release|x86.ActiveCfg = Release|x86
+		{FE95AD95-8CEF-4AEB-8F1B-E1713DC9489C}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = ..\..\..\Projects\personal\major\csharp\Net\Client\Net.Client.csproj
+		StartupItem = Net\Client\Net.Client.csproj
 	EndGlobalSection
 EndGlobal

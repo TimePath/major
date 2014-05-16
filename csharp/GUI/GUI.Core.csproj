@@ -9,6 +9,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>GUI</RootNamespace>
     <AssemblyName>GUI</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -41,5 +42,11 @@
     <Reference Include="DokanNet">
       <HintPath>..\Lib\DokanNet\DokanNet\bin\x86\Debug\DokanNet.dll</HintPath>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FS\FS.Core.csproj">
+      <Project>{F14FD851-5657-4819-9EC1-64E6EBA36218}</Project>
+      <Name>FS.Core</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>

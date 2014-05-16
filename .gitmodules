@@ -1,0 +1,6 @@
+[submodule "csharp/FS/Lib/dokan"]
+	path = csharp/FS/Lib/dokan
+	url = https://github.com/svn2github/dokan.git
+[submodule "csharp/FS/Lib/mono-fuse"]
+	path = csharp/FS/Lib/mono-fuse
+	url = https://github.com/jonpryor/mono-fuse.git

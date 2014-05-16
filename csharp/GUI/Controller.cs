@@ -1,7 +1,7 @@
 using System;
 using System.Drawing;
 using System.ComponentModel;
-using Dokan;
+using FS;
 
 namespace GUI
 {
@@ -60,18 +60,11 @@ namespace GUI
 			Console.WriteLine ("Starting");
 			_dokanWorker = new BackgroundWorker ();
 			_dokanWorker.DoWork += delegate { 
-				DokanOptions opts = new DokanOptions {
-					// Limit to one thread during debugging
-					ThreadCount = (ushort)(System.Diagnostics.Debugger.IsAttached ? 1 : 0), 
-					DebugMode = true, 
-					UseStdErr = true,
-					UseKeepAlive = true,
-					NetworkDrive = false,
+				MountOptions opts = new MountOptions {
 					RemovableDrive = false,
 					VolumeLabel = Mount.Label,
 					MountPoint = Mount.Path
 				};
-				// DokanNet.DokanMain (opts, new DokanMemoryStreamOperations ());
 			};
 			_dokanWorker.RunWorkerAsync ();
 		}

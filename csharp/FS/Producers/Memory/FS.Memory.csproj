@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>12.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{07F9DBE1-5D4B-4A0B-8DE6-8936626EDCCE}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>FS.Memory</RootNamespace>
+    <AssemblyName>FS.Memory</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Compile Include="MemFS.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\FS.Core.csproj">
+      <Project>{F14FD851-5657-4819-9EC1-64E6EBA36218}</Project>
+      <Name>FS.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Consumers\Dokan\FS.Dokan.csproj">
+      <Project>{FE95AD95-8CEF-4AEB-8F1B-E1713DC9489C}</Project>
+      <Name>FS.Dokan</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="FS">
+      <HintPath>..\..\bin\Debug\FS.dll</HintPath>
+    </Reference>
+    <Reference Include="DokanNet">
+      <HintPath>..\..\bin\Debug\DokanNet.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>
