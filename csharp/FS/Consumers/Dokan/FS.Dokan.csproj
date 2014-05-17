@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{FE95AD95-8CEF-4AEB-8F1B-E1713DC9489C}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>Dokan</RootNamespace>
+    <RootNamespace>FS.Dokan</RootNamespace>
     <AssemblyName>Dokan</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
@@ -36,18 +36,13 @@
     <Compile Include="DokanConsumer.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Core\FS.Core.csproj">
+      <Project>{F14FD851-5657-4819-9EC1-64E6EBA36218}</Project>
+      <Name>FS.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Lib\dokan\dokan_net\DokanNet\DokanNet.csproj">
       <Project>{A09B408A-26A0-4FF8-83D5-6E1B1DA5F63C}</Project>
       <Name>DokanNet</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\FS.Core.csproj">
-      <Project>{F14FD851-5657-4819-9EC1-64E6EBA36218}</Project>
-      <Name>FS.Core</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="FS">
-      <HintPath>..\..\bin\Debug\FS.dll</HintPath>
-    </Reference>
   </ItemGroup>
 </Project>

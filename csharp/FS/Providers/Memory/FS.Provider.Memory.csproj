@@ -5,11 +5,10 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>12.0.0</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{1720FC81-884D-4583-8330-EC5EDE126973}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
-    <RootNamespace>GUI.WinForms</RootNamespace>
-    <AssemblyName>WinForms</AssemblyName>
-    <StartupObject>GUI.WinForms.Program</StartupObject>
+    <ProjectGuid>{07F9DBE1-5D4B-4A0B-8DE6-8936626EDCCE}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>FS.Provider.Memory</RootNamespace>
+    <AssemblyName>FS.Memory</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -20,8 +19,8 @@
     <DefineConstants>DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <ConsolePause>false</ConsolePause>
     <PlatformTarget>x86</PlatformTarget>
+    <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <DebugType>full</DebugType>
@@ -29,27 +28,17 @@
     <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <ConsolePause>false</ConsolePause>
     <PlatformTarget>x86</PlatformTarget>
+    <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <Compile Include="Program.cs" />
-    <Compile Include="Utils\BitmapConverter.cs" />
-    <Compile Include="MainWindow.cs" />
+    <Compile Include="MemoryProvider.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Utils\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\GUI.Core.csproj">
-      <Project>{782005D2-14CC-479E-ABC7-7777DE1F70EB}</Project>
-      <Name>GUI.Core</Name>
+    <ProjectReference Include="..\..\Core\FS.Core.csproj">
+      <Project>{F14FD851-5657-4819-9EC1-64E6EBA36218}</Project>
+      <Name>FS.Core</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>

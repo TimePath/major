@@ -34,19 +34,14 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Compile Include="Controller.cs" />
-    <Compile Include="Utils.cs" />
+    <Compile Include="Utils\OS.cs" />
+    <Compile Include="Utils\IconFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Drawing" />
     <Reference Include="System" />
-    <Reference Include="DokanNet">
-      <HintPath>..\Lib\DokanNet\DokanNet\bin\x86\Debug\DokanNet.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FS\FS.Core.csproj">
-      <Project>{F14FD851-5657-4819-9EC1-64E6EBA36218}</Project>
-      <Name>FS.Core</Name>
-    </ProjectReference>
+    <Folder Include="Utils\" />
   </ItemGroup>
 </Project>

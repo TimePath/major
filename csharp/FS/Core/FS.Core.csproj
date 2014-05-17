@@ -35,7 +35,4 @@
   <ItemGroup>
     <Compile Include="Declarations.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Consumers\" />
-  </ItemGroup>
 </Project>
