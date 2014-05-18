@@ -3,10 +3,23 @@ using Dokan;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace FS.Dokan
+namespace FS.Consumer.Dokan
 {
-    public class DokanConsumer : VFSConsumer, DokanOperations
+    public class DokanConsumer : DokanOperations, VFSConsumer
     {
+
+        public static void Main (string[] args)
+        {
+            Console.WriteLine ("Starting");
+            new DokanConsumer ().Start (new FS.Provider.Memory.MemoryProvider (), new MountOptions {
+                VolumeLabel = "Dokan",
+                MountPoint = "f:\\",
+                FileSystemName = "Virtual",
+                RemovableDrive = true
+            });
+            Console.WriteLine ("Finished");
+        }
+
         VFSProvider data;
 
         #region VFSConsumer implementation

@@ -5,11 +5,10 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>12.0.0</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{C7CD49A2-7754-471B-BD2F-CD392D73EACB}</ProjectGuid>
+    <ProjectGuid>{450FD4CE-2BD6-4A38-BAB6-823086C346BD}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>FS.Test</RootNamespace>
-    <AssemblyName>Test</AssemblyName>
-    <StartupObject>FS.Test.Program</StartupObject>
+    <RootNamespace>FS.Consumer.FUSE</RootNamespace>
+    <AssemblyName>FUSE</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -20,8 +19,8 @@
     <DefineConstants>DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x86</PlatformTarget>
     <ConsolePause>false</ConsolePause>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <DebugType>full</DebugType>
@@ -29,38 +28,27 @@
     <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x86</PlatformTarget>
     <ConsolePause>false</ConsolePause>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="FUSEConsumer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Core\FS.Core.csproj">
+    <ProjectReference Include="..\..\Core\FS.Core.csproj">
       <Project>{F14FD851-5657-4819-9EC1-64E6EBA36218}</Project>
       <Name>FS.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Providers\Memory\FS.Provider.Memory.csproj">
+    <ProjectReference Include="..\..\Providers\Memory\FS.Provider.Memory.csproj">
       <Project>{07F9DBE1-5D4B-4A0B-8DE6-8936626EDCCE}</Project>
       <Name>FS.Provider.Memory</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Lib\dokan\dokan_net\DokanNet\DokanNet.csproj">
-      <Project>{A09B408A-26A0-4FF8-83D5-6E1B1DA5F63C}</Project>
-      <Name>DokanNet</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Consumers\Dokan\FS.Consumer.Dokan.csproj">
-      <Project>{FE95AD95-8CEF-4AEB-8F1B-E1713DC9489C}</Project>
-      <Name>FS.Consumer.Dokan</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Consumers\FUSE\FS.Consumer.FUSE.csproj">
-      <Project>{450FD4CE-2BD6-4A38-BAB6-823086C346BD}</Project>
-      <Name>FS.Consumer.FUSE</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Mono.Fuse">
-      <HintPath>..\Lib\mono-fuse\lib\mono-fuse\Mono.Fuse.dll</HintPath>
+      <HintPath>..\..\Lib\mono-fuse\lib\mono-fuse\Mono.Fuse.dll</HintPath>
     </Reference>
+    <Reference Include="Mono.Posix" />
   </ItemGroup>
 </Project>

@@ -7,7 +7,7 @@ namespace FS.Test
         public static void Main (string[] args)
         {
             Console.WriteLine ("Starting");
-            new FS.Dokan.DokanConsumer ().Start (new FS.Provider.Memory.MemoryProvider (), new MountOptions {
+            new FS.Consumer.Dokan.DokanConsumer ().Start (new FS.Provider.Memory.MemoryProvider (), new MountOptions {
                 VolumeLabel = "Dokan",
                 MountPoint = "f:\\",
                 FileSystemName = "Virtual",
