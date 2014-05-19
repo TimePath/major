@@ -6,11 +6,10 @@ namespace FS.Provider.Memory
 {
     public class MemoryProvider : VFSProvider
     {
-        string theFile = "Dummy data.txt";
-        int mult = Int16.MaxValue;
-
-        #region implemented abstract members of VFS
-
+        string mock = "Dummy data.txt";
+        int mockLen = Int16.MaxValue;
+        string ROOT = "/";
+        #region implemented abstract members of VFSProvider
         int VFSProvider.CreateFile (string filename, FileAccess access, FileShare share, FileMode mode, FileOptions options)
         {
             return VFSConstants.SUCCESS;
@@ -31,41 +30,45 @@ namespace FS.Provider.Memory
             return VFSConstants.SUCCESS;
         }
 
-        int VFSProvider.CloseFile (string filename)
+        int VFSProvider.Close (string filename)
         {
             return VFSConstants.SUCCESS;
         }
 
-        int VFSProvider.ReadFile (string filename, byte[] buffer, ref uint readBytes, long offset)
+        int VFSProvider.Read (string filename, long offset, byte[] buffer, out uint readBytes)
         {
-            if (filename != @"\" + theFile) {
+            readBytes = 0;
+            if (filename != ROOT + mock) {
                 return VFSConstants.ERROR;
             }
-            readBytes = (uint)Math.Min (mult, buffer.Length);
+            //Buffer.BlockCopy (dummy, 0, buf, 0, dummy.Length);
+            readBytes = (uint)Math.Min (mockLen, buffer.Length);
             for (int i = 0; i < readBytes; i++) {
                 buffer [i] = 42;
             }
             return VFSConstants.SUCCESS;
         }
 
-        int VFSProvider.WriteFile (string filename, byte[] buffer, ref uint writtenBytes, long offset)
+        int VFSProvider.Write (string filename, long offset, byte[] buffer, out uint writtenBytes)
+        {
+            writtenBytes = 0;
+            return VFSConstants.SUCCESS;
+        }
+
+        int VFSProvider.Flush (string filename)
         {
             return VFSConstants.SUCCESS;
         }
 
-        int VFSProvider.FlushFileBuffers (string filename)
+        int VFSProvider.GetFileInformation (string filename, out VFileInfo info)
         {
-            return VFSConstants.SUCCESS;
-        }
-
-        int VFSProvider.GetFileInformation (string filename, VFileInfo info)
-        {
-            if (filename == @"\") {
+            info = new VFileInfo ();
+            if (filename == ROOT) {
                 info.Attributes = FileAttributes.Directory;
                 info.Length = 0;
             } else {
                 info.Attributes = FileAttributes.Normal;
-                info.Length = mult;
+                info.Length = mockLen;
             }
             info.LastAccessTime = DateTime.Now;
             info.LastWriteTime = DateTime.Now;
@@ -74,16 +77,16 @@ namespace FS.Provider.Memory
             return VFSConstants.SUCCESS;
         }
 
-        int VFSProvider.FindFiles (string filename, IList<VFileInfo> files)
+        int VFSProvider.List (string path, out IList<VFileInfo> files)
         {
-            files.Add (new VFileInfo {
-                Attributes = FileAttributes.Normal,
-                LastAccessTime = DateTime.Now,
-                LastWriteTime = DateTime.Now,
-                CreationTime = DateTime.Now,
-                Length = mult,
-                FileName = theFile
-            });
+            files = new List<VFileInfo> ();
+            if (path == ROOT) {
+                files.Add (new VFileInfo {
+                    Attributes = FileAttributes.Normal,
+                    Length = mockLen,
+                    Name = mock
+                });
+            }
             return VFSConstants.SUCCESS;
         }
 
@@ -144,9 +147,7 @@ namespace FS.Provider.Memory
         {
             return VFSConstants.SUCCESS;
         }
-
         #endregion
-
     }
 }
 

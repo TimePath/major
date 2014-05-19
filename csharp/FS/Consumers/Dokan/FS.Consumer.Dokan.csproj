@@ -6,7 +6,7 @@
     <ProductVersion>12.0.0</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{FE95AD95-8CEF-4AEB-8F1B-E1713DC9489C}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
     <RootNamespace>FS.Consumer.Dokan</RootNamespace>
     <AssemblyName>Dokan</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
@@ -43,10 +43,6 @@
     <ProjectReference Include="..\..\Lib\dokan\dokan_net\DokanNet\DokanNet.csproj">
       <Project>{A09B408A-26A0-4FF8-83D5-6E1B1DA5F63C}</Project>
       <Name>DokanNet</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Providers\Memory\FS.Provider.Memory.csproj">
-      <Project>{07F9DBE1-5D4B-4A0B-8DE6-8936626EDCCE}</Project>
-      <Name>FS.Provider.Memory</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>

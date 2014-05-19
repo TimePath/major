@@ -63,4 +63,13 @@
       <HintPath>..\Lib\mono-fuse\lib\mono-fuse\Mono.Fuse.dll</HintPath>
     </Reference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Lib\mono-fuse\lib\libMonoFuseHelper.so">
+      <Link>libMonoFuseHelper.so</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\Consumers\Dokan\bin\Debug\Dokan.dll">
+      <Link>Dokan.dll</Link>
+    </None>
+  </ItemGroup>
 </Project>

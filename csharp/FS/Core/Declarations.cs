@@ -15,13 +15,15 @@ namespace FS
 
     public class VFileInfo
     {
-        public bool IsDirectory;
+        public bool IsDirectory() {
+            return Attributes == FileAttributes.Directory;
+        }
         public FileAttributes Attributes;
-        public DateTime CreationTime;
-        public DateTime LastAccessTime;
-        public DateTime LastWriteTime;
+        public DateTime CreationTime = DateTime.Now;
+        public DateTime LastAccessTime = DateTime.Now;
+        public DateTime LastWriteTime = DateTime.Now;
         public long Length;
-        public string FileName;
+        public string Name;
     }
 
     public class VFSConstants
@@ -51,6 +53,8 @@ namespace FS
     public interface VFSConsumer
     {
         void Start (VFSProvider data, MountOptions opts);
+
+        void Stop ();
     }
 
     /// <summary>
@@ -58,6 +62,7 @@ namespace FS
     /// </summary>
     public interface VFSProvider
     {
+
         /// <summary>
         /// Check if unmounting is possible
         /// </summary>
@@ -65,32 +70,69 @@ namespace FS
 
         int CreateFile (string filename, FileAccess access, FileShare share, FileMode mode, FileOptions options);
 
-        int OpenDirectory (string filename);
+        /// <summary>
+        /// cd
+        /// </summary>
+        /// <returns>The directory.</returns>
+        /// <param name="path">Path.</param>
+        int OpenDirectory (string path);
 
-        int CreateDirectory (string filename);
+        /// <summary>
+        /// mkdir
+        /// </summary>
+        /// <returns>The directory.</returns>
+        /// <param name="path">Path.</param>
+        int CreateDirectory (string path);
 
         int Cleanup (string filename);
 
-        int CloseFile (string filename);
+        int Close (string filename);
 
-        int ReadFile (string filename, byte[] buffer, ref uint readBytes, long offset);
+        int Read (string filename, long offset, byte[] buffer, out uint readBytes);
 
-        int WriteFile (string filename, byte[] buffer, ref uint writtenBytes, long offset);
+        int Write (string filename, long offset, byte[] buffer, out uint writtenBytes);
 
-        int FlushFileBuffers (string filename);
+        int Flush (string filename);
 
-        int GetFileInformation (string filename, VFileInfo info);
+        int GetFileInformation (string filename, out VFileInfo info);
 
-        int FindFiles (string filename, IList<VFileInfo> files);
+        /// <summary>
+        /// ls
+        /// </summary>
+        /// <returns>The files.</returns>
+        /// <param name="path">Path.</param>
+        /// <param name="files">Files.</param>
+        int List (string path, out IList<VFileInfo> files);
 
         int SetFileAttributes (string filename, FileAttributes attr);
 
+        /// <summary>
+        /// touch
+        /// </summary>
+        /// <param name="filename">Filename.</param>
+        /// <param name="ctime">Creation time.</param>
+        /// <param name="atime">Access time.</param>
+        /// <param name="mtime">Modification time.</param>
         int SetFileTime (string filename, DateTime ctime, DateTime atime, DateTime mtime);
 
+        /// <summary>
+        /// rm
+        /// </summary>
+        /// <param name="filename">Filename.</param>
         int DeleteFile (string filename);
 
-        int DeleteDirectory (string filename);
+        /// <summary>
+        /// rmdir
+        /// </summary>
+        /// <param name="path">Path.</param>
+        int DeleteDirectory (string path);
 
+        /// <summary>
+        /// mv
+        /// </summary>
+        /// <param name="filename">Filename.</param>
+        /// <param name="newname">Newname.</param>
+        /// <param name="replace">If set to <c>true</c> replace.</param>
         int MoveFile (string filename, string newname, bool replace);
 
         int Truncate (string filename, long length);

@@ -2,71 +2,57 @@ using System;
 using Dokan;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 
 namespace FS.Consumer.Dokan
 {
     public class DokanConsumer : DokanOperations, VFSConsumer
     {
 
-        public static void Main (string[] args)
-        {
-            Console.WriteLine ("Starting");
-            new DokanConsumer ().Start (new FS.Provider.Memory.MemoryProvider (), new MountOptions {
-                VolumeLabel = "Dokan",
-                MountPoint = "f:\\",
-                FileSystemName = "Virtual",
-                RemovableDrive = true
-            });
-            Console.WriteLine ("Finished");
-        }
-
         VFSProvider data;
-
         #region VFSConsumer implementation
-
         public void Start (VFSProvider data, MountOptions opts)
         {
             this.data = data;
             DokanOptions dokanOpts = new DokanOptions () {
-                MountPoint = opts.MountPoint,
                 DebugMode = true, 
                 UseStdErr = true,
+                MountPoint = opts.MountPoint,
                 VolumeLabel = opts.VolumeLabel,
                 FileSystemName = opts.FileSystemName
             };
-            Console.WriteLine ("DokanMain");
             int status = DokanNet.DokanMain (dokanOpts, this);
-
-            if (status != DokanNet.DOKAN_SUCCESS) {
-                switch (status) {
-                case DokanNet.DOKAN_DRIVE_LETTER_ERROR:
-                    Console.WriteLine ("Drive letter error");
-                    break;
-                case DokanNet.DOKAN_DRIVER_INSTALL_ERROR:
-                    Console.WriteLine ("Driver install error");
-                    break;
-                case DokanNet.DOKAN_MOUNT_ERROR:
-                    Console.WriteLine ("Mount error");
-                    break;
-                case DokanNet.DOKAN_START_ERROR:
-                    Console.WriteLine ("Start error");
-                    break;
-                case DokanNet.DOKAN_ERROR:
-                    Console.WriteLine ("Unknown error");
-                    break;
-                default:
-                    Console.WriteLine ("Unknown status: %d", status);
-                    break;
-                }
-            } else {
+            switch (status) {
+            case DokanNet.DOKAN_SUCCESS:
                 Console.WriteLine ("Clean shutdown");
+                break;
+            case DokanNet.DOKAN_DRIVE_LETTER_ERROR:
+                Console.WriteLine ("Drive letter error");
+                break;
+            case DokanNet.DOKAN_DRIVER_INSTALL_ERROR:
+                Console.WriteLine ("Driver install error");
+                break;
+            case DokanNet.DOKAN_MOUNT_ERROR:
+                Console.WriteLine ("Mount error");
+                break;
+            case DokanNet.DOKAN_START_ERROR:
+                Console.WriteLine ("Start error");
+                break;
+            case DokanNet.DOKAN_ERROR:
+                Console.WriteLine ("Unknown error");
+                break;
+            default:
+                Console.WriteLine ("Unknown status: %d", status);
+                break;
             }
         }
 
+        public void Stop ()
+        {
+            Console.WriteLine ("TODO: stop Dokan");
+        }
         #endregion
-
         #region DokanOperations implementation
-
         int DokanOperations.CreateFile (string filename, System.IO.FileAccess access, System.IO.FileShare share, System.IO.FileMode mode, System.IO.FileOptions options, DokanFileInfo info)
         {
             return data.CreateFile (filename, access, share, mode, options);
@@ -89,36 +75,28 @@ namespace FS.Consumer.Dokan
 
         int DokanOperations.CloseFile (string filename, DokanFileInfo info)
         {
-            return data.CloseFile (filename);
+            return data.Close (filename);
         }
 
         int DokanOperations.ReadFile (string filename, byte[] buffer, ref uint readBytes, long offset, DokanFileInfo info)
         {
-            return data.ReadFile (filename, buffer, ref readBytes, offset);
+            return data.Read (filename, offset, buffer, out readBytes);
         }
 
         int DokanOperations.WriteFile (string filename, byte[] buffer, ref uint writtenBytes, long offset, DokanFileInfo info)
         {
-            return data.WriteFile (filename, buffer, ref writtenBytes, offset);
+            return data.Write (filename, offset, buffer, out writtenBytes);
         }
 
         int DokanOperations.FlushFileBuffers (string filename, DokanFileInfo info)
         {
-            return data.FlushFileBuffers (filename);
+            return data.Flush (filename);
         }
 
         int DokanOperations.GetFileInformation (string filename, FileInformation fileinfo, DokanFileInfo info)
         {
-            VFileInfo vinfo = new VFileInfo {
-                Attributes = fileinfo.Attributes,
-                CreationTime = fileinfo.CreationTime,
-                FileName = fileinfo.FileName,
-                IsDirectory = info.IsDirectory,
-                LastAccessTime = fileinfo.LastAccessTime,
-                LastWriteTime = fileinfo.LastWriteTime,
-                Length = fileinfo.Length
-            };
-            int status = data.GetFileInformation (filename, vinfo);
+            VFileInfo vinfo;
+            int status = data.GetFileInformation (filename, out vinfo);
             fileinfo.Attributes = vinfo.Attributes;
             fileinfo.CreationTime = vinfo.CreationTime;
             fileinfo.LastAccessTime = vinfo.LastAccessTime;
@@ -129,16 +107,16 @@ namespace FS.Consumer.Dokan
 
         int DokanOperations.FindFiles (string filename, System.Collections.ArrayList files, DokanFileInfo info)
         {
-            IList<VFileInfo> vfiles = new List<VFileInfo> ();
-            int status = data.FindFiles (filename, vfiles);
+            IList<VFileInfo> vfiles;
+            int status = data.List (filename, out vfiles);
             foreach (VFileInfo i in vfiles) {
                 files.Add (new FileInformation {
                     Attributes = i.Attributes,
                     CreationTime = i.CreationTime,
-                    FileName = i.FileName,
+                    FileName = i.Name,
                     LastAccessTime = i.LastAccessTime,
                     LastWriteTime = i.LastWriteTime,
-                    Length = i.IsDirectory ? 0 : i.Length
+                    Length = i.IsDirectory() ? 0 : i.Length
                 });
             }
             return status;
@@ -198,8 +176,6 @@ namespace FS.Consumer.Dokan
         {
             return data.Unmount ();
         }
-
         #endregion
-
     }
 }
