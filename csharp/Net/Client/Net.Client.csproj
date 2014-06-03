@@ -34,8 +34,8 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Compile Include="Program.cs" />
-    <Compile Include="Proto\AddressBookProtos.cs" />
     <Compile Include="Utils\EndianConverter.cs" />
+    <Compile Include="Proto\Files.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

@@ -6,7 +6,7 @@ using System.Text;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using Google.ProtocolBuffers.Examples.AddressBook;
+using Major.Proto;
 
 namespace Net.Client
 {
@@ -17,20 +17,14 @@ namespace Net.Client
             AsyncClient c = new AsyncClient (new IPEndPoint (IPAddress.Parse ("127.0.0.1"), 9001));
             c.Connect ();
             (new Thread (() => {
-                Person contact = Person.CreateBuilder ()
-					.SetId (1)
-					.SetName ("Foo")
-					.SetEmail ("foo@bar.com")
-					.AddPhone (Person.Types.PhoneNumber.CreateBuilder ()
-						.SetNumber ("1234-5678")
-						.Build ())
-					.Build ();
-
-                AddressBook book = AddressBook.CreateBuilder ()
-					.AddPerson (contact)
-					.Build ();
-
-                book.WriteDelimitedTo (c.netStream);
+                FileListing f = FileListing.CreateBuilder ()
+                                .AddFile (Major.Proto.File.CreateBuilder ()
+                        .SetName ("text.txt")
+                        .SetBody ("text")
+                        .SetType (Major.Proto.File.Types.FileType.FILE)
+                        .Build ())
+                    .Build ();
+                f.WriteDelimitedTo (c.netStream);
             })).Start ();
         }
 
@@ -65,8 +59,8 @@ namespace Net.Client
                         if (!connection.Poll (-1, SelectMode.SelectRead)) {
                             continue;
                         }
-                        Person p = Person.ParseDelimitedFrom (netStream);
-                        Console.WriteLine (p);
+                        FileListing f = FileListing.ParseDelimitedFrom (netStream);
+                        Console.WriteLine (f);
                     }
                 });
                 netThread.Start ();
