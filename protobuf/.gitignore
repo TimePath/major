@@ -2,9 +2,8 @@
 /.idea/
 /*.iml
 
-/bin/
 /Google.ProtocolBuffers*
-/src/main/protos/google
-/src/main/protos/tutorial
+/src/main/proto/google
+/src/main/proto/tutorial
 /lib
 /tools

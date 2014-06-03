@@ -1,0 +1,4 @@
+#!/bin/bash
+PROTOC=$(realpath $(dirname $0)/../tools/protoc.exe)
+echo $PROTOC
+wine $PROTOC $@

@@ -9,9 +9,8 @@ bootstrap() {
     ln -s ${PKG}/lib lib
     chmod +x tools/ProtoGen.exe
     mkdir bin
-    ln -s $(which protoc) bin/protoc.exe
-    cp -r ${PKG}/content/protos src/main
-    rm -r src/main/protos/tutorial
+    cp -r ${PKG}/content/protos/* src/main/proto
+    rm -r src/main/proto/tutorial
 }
 
 [ -d target ] || bootstrap
