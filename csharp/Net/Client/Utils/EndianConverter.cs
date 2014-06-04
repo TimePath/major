@@ -21,6 +21,12 @@ namespace Net.Client
             return BitConverter.ToInt32 (br.ReadFully (sizeof(Int32)).Big (), 0);
         }
 
+        public static void WriteShort(this Stream ns, long integer)
+        {
+            ns.WriteByte((byte)((integer & 0xFF00) >> 8)); 
+            ns.WriteByte((byte)(integer & 0xFF));
+        }
+
         private static byte[] ReadFully (this BinaryReader br, int byteCount)
         {
             var result = br.ReadBytes (byteCount);

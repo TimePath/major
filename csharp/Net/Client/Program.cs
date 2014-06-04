@@ -24,7 +24,7 @@ namespace Net.Client
                         .SetType (Major.Proto.File.Types.FileType.FILE)
                         .Build ())
                     .Build ();
-                f.WriteDelimitedTo (c.netStream);
+                c.Write(f);
             })).Start ();
         }
 
@@ -41,11 +41,33 @@ namespace Net.Client
             this.remote = ipEndpoint;
         }
 
+        public void Write(FileListing msg)
+        {
+            var buf = new MemoryStream();
+            msg.WriteTo(buf);
+
+            netStream.WriteShort(buf.Length); 
+            buf.WriteTo(netStream);
+            netStream.Flush();
+        }
+
+        public FileListing Read()
+        {
+            int length = (netStream.ReadByte() << 8) | netStream.ReadByte();
+            byte[] buf = new byte[length];
+            int total = 0;
+            while (total < length)
+            {
+                total += netStream.Read(buf, total, length - total);
+            }
+            return FileListing.ParseFrom(new MemoryStream(buf));
+        }
+
         public void Connect ()
         {
             ManualResetEvent initialized = new ManualResetEvent (false);
             connection = new Socket (AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-
+            
             connection.BeginConnect (remote, ar => {
                 connection.EndConnect (ar);
                 Console.WriteLine ("Connected to {0}", remote.ToString ());
@@ -59,8 +81,8 @@ namespace Net.Client
                         if (!connection.Poll (-1, SelectMode.SelectRead)) {
                             continue;
                         }
-                        FileListing f = FileListing.ParseDelimitedFrom (netStream);
-                        Console.WriteLine (f);
+                        FileListing f = Read();
+                        Console.WriteLine ("Got {0}", f.GetFile(0));
                     }
                 });
                 netThread.Start ();
