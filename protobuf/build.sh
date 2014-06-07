@@ -1,22 +1,18 @@
 #!/bin/bash
-PROTO_GEN=$(realpath tools/ProtoGen.exe)
+# Responsible for building csharp protobuf messages
+
+PROTOGEN=$(realpath tools/ProtoGen.exe)
 PROTOC_DIR=$(realpath bin)
 
-mkdir -p target
-JAVA=$(realpath target/java)
-CSHARP=$(realpath target/csharp)
-mkdir -p ${JAVA}
+CSHARP=$(realpath target/generated-sources/csharp)
 mkdir -p ${CSHARP}
 
 cd src/main/proto
 
-# Protobuf doesn't provide source/binary compatibility across different versions
-# TODO: -ignore_google_protobuf=true doesn't work properly
-
 FOUND=$(find . -type f -name '*.proto')
 echo Compiling: ${FOUND}
 
-${PROTO_GEN} --protoc_dir=${PROTOC_DIR} --proto_path=. \
---include_imports \
---java_out=${JAVA} -output_directory=${CSHARP} \
-${FOUND}
+${PROTOGEN} --protoc_dir=${PROTOC_DIR} -ignore_google_protobuf=true --proto_path=. --include_imports -output_directory=${CSHARP} ${FOUND}
+
+# The double colon operator with using alias directive on generic types confuses monodevelop
+sed -e 's/::/./g' -e 's/global./global::/g' -i -s $(find ${CSHARP} -type f -name '*.cs')

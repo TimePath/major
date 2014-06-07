@@ -1,6 +1,6 @@
 #!/bin/bash
 PROTOC="wine $(realpath $(dirname $0)/../tools/protoc.exe)"
 #PROTOC="protoc"
-echo $PROTOC
+echo $PROTOC $@
 $PROTOC --version
 $PROTOC $@

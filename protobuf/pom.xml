@@ -32,11 +32,13 @@
                 <artifactId>maven-protoc-plugin</artifactId>
                 <version>0.1.10</version>
                 <configuration>
+                    <!--Protobuf doesn't provide source/binary compatibility across different versions-->
                     <protocExecutable>${project.basedir}/bin/protoc.exe</protocExecutable>
                     <checkStaleness>true</checkStaleness>
                     <!--Including this confuses the android DEXer-->
                     <excludes>
                         <exclude>**/google/protobuf/descriptor.proto</exclude>
+                        <!--TODO: however, generated files still depend on CsharpOptions-->
                     </excludes>
                 </configuration>
                 <executions>
@@ -44,6 +46,23 @@
                         <goals>
                             <goal>compile</goal>
                         </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.3</version>
+                <executions>
+                    <execution>
+                        <id>protobuf-csharp</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>${basedir}/build.sh</executable>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
