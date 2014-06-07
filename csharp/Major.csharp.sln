@@ -69,7 +69,7 @@ Global
 		{FE95AD95-8CEF-4AEB-8F1B-E1713DC9489C}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = FS\Test\FS.Test.csproj
+		StartupItem = Net\Client\Net.Client.csproj
 		Policies = $0
 		$0.TextStylePolicy = $1
 		$1.FileWidth = 120

@@ -8,14 +8,23 @@ using System.Collections.Generic;
 using System.IO;
 using Google.ProtocolBuffers;
 using Major.Proto;
+using System.Reflection;
 
 namespace Net.Client
 {
+    public class CallbackAttribute : Attribute
+    {
+    }
+
     public class ProtoConnection
     {
         private Socket connection;
         private IPEndPoint remote;
         private NetworkStream netStream;
+
+        protected ProtoConnection ()
+        {
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Net.Client.AsyncClient"/> class.
@@ -26,9 +35,42 @@ namespace Net.Client
             this.remote = ipEndpoint;
         }
 
-        public Meta Read ()
+        public void Read ()
         {
-            return Meta.ParseDelimitedFrom (netStream);
+            Callback (this, Meta.ParseDelimitedFrom (netStream));
+        }
+
+        private bool IsApplicable (MethodInfo method, object o)
+        {
+            if (method.GetCustomAttributes (typeof(CallbackAttribute), false).Length == 0)
+                return false;
+            ParameterInfo[] c = method.GetParameters ();
+            if (c.Length != 1)
+                return false;
+            return c [0].ParameterType.IsAssignableFrom (o.GetType ());
+        }
+
+        protected void Callback (object callbacks, Meta msg)
+        {
+            foreach (var o in msg.AllFields.Values) {
+                if (o == null)
+                    continue;
+                MethodInfo m = null;
+                foreach (var methodInfo in callbacks.GetType ().GetMethods (BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly)) {
+                    if (IsApplicable (methodInfo, o)) {
+                        m = methodInfo;
+                        break;
+                    }
+                }
+                if (m == null) {
+                    throw new SystemException ("No callback for '" + o.GetType () + "'.");
+                }
+                try {
+                    m.Invoke (this, new object[]{ o });
+                } catch (Exception e) {
+                    throw new SystemException ("Callback failed for '" + o.GetType () + "'.", e);
+                }
+            }
         }
 
         public void Write (IMessageLite msg)
@@ -53,8 +95,7 @@ namespace Net.Client
                         if (!connection.Poll (-1, SelectMode.SelectRead)) {
                             continue;
                         }
-                        Meta msg = Read ();
-                        Console.WriteLine ("Got {0}", msg);
+                        Read ();
                     }
                 }).Start ();
 
