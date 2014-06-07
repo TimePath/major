@@ -13,24 +13,27 @@ option (google.protobuf.csharp_file_options).expand_namespace_directories = true
 
 // Filename options
 
-option java_outer_classname = "Files";
+option java_outer_classname = "Messages";
 
-option (google.protobuf.csharp_file_options).umbrella_classname = "Files";
+option (google.protobuf.csharp_file_options).umbrella_classname = "Messages";
 
 // Messages
 
-message File {
-    required string name = 1;
-    optional string body = 2;
-
-    enum FileType {
-        FILE = 0;
-        DIRECTORY = 1;
-    }
-
-    optional FileType type = 3 [default = FILE];
+message Meta {
+    optional FileListing files = 2;
 }
 
 message FileListing {
+    message File {
+        required string name = 1;
+        optional string body = 2;
+
+        enum FileType {
+            FILE = 0;
+            DIRECTORY = 1;
+        }
+
+        optional FileType type = 3 [default = FILE];
+    }
     repeated File file = 1;
 }

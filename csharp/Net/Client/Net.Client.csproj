@@ -9,7 +9,7 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>Net.Client</RootNamespace>
     <AssemblyName>Client</AssemblyName>
-    <StartupObject>Net.Client.AsyncClient</StartupObject>
+    <StartupObject>Net.Client.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -33,9 +33,9 @@
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <Compile Include="Program.cs" />
-    <Compile Include="Utils\EndianConverter.cs" />
-    <Compile Include="Proto\Files.cs" />
+    <Compile Include="ProtoConnection.cs" />
+    <Compile Include="Proto\Messages.cs" />
+    <Compile Include="Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
