@@ -48,45 +48,72 @@ CREATE UNIQUE INDEX nodupes_root ON pathnames (name) WHERE parent IS NULL;
 
 
 CREATE OR REPLACE FUNCTION numch(text, text) RETURNS integer AS $$
-SELECT length($2) - length(replace($2, $1, '')) $$ LANGUAGE SQL;
+    SELECT length($2) - length(replace($2, $1, '')) $$
+LANGUAGE SQL;
 
 
 
 -- `CREATE VIEW mappings AS` for caching?
-CREATE OR REPLACE FUNCTION tree( maxdepth int = 1 ) RETURNS TABLE( id int, name text, parent int, depth int, path text ) AS $$
-BEGIN
-RETURN QUERY
-WITH RECURSIVE pathnames_cte( id, name, parent, depth, path ) AS (
-    SELECT root.id, root.name, root.parent, 1::int as depth, ( '/' || root.name::TEXT ) AS path
-    FROM pathnames AS root
-    WHERE root.parent IS NULL
-    UNION ALL
-    SELECT child.id, child.name, child.parent, parent.depth + 1, ( parent.path || '/' || child.name::TEXT )
-    FROM pathnames_cte AS parent, pathnames AS child
-    WHERE child.parent = parent.id AND parent.depth < maxdepth
-)
-SELECT *
-FROM pathnames_cte AS path
-ORDER BY path.id ASC;
-END; $$
+CREATE OR REPLACE FUNCTION tree( maxdepth int = 1 )
+RETURNS TABLE( id int, name text, parent int, fd int, depth int, path text ) AS $$
+    BEGIN
+        RETURN QUERY
+            WITH RECURSIVE pathnames_cte( id, name, parent, fd, depth, path ) AS (
+                SELECT
+                    root.id,
+                    root.name,
+                    root.parent,
+                    root.fd::int AS fd,
+                    1::int AS depth, ( '/' || root.name::TEXT ) AS path
+                FROM pathnames AS root
+                WHERE root.parent IS NULL
+                UNION ALL
+                SELECT
+                    child.id,
+                    child.name,
+                    child.parent,
+                    child.fd::int AS fd,
+                    parent.depth + 1 AS depth,
+                    ( parent.path || '/' || child.name::TEXT ) AS path
+                FROM
+                    pathnames_cte AS parent,
+                    pathnames AS child
+                WHERE child.parent = parent.id AND parent.depth < maxdepth
+            )
+            SELECT *
+            FROM pathnames_cte AS path
+            ORDER BY path.id ASC;
+    END; $$
 LANGUAGE plpgsql;
 
 
 
-CREATE OR REPLACE FUNCTION children( path_request text ) RETURNS TABLE( id int, name text ) AS $$
-DECLARE
-        parent_id int;
-BEGIN
-    IF length(path_request) < 2 THEN
-        RETURN QUERY SELECT root.id, root.name FROM tree() AS root;
-    ELSE
+CREATE OR REPLACE FUNCTION children( path_request text )
+RETURNS TABLE( name text, uri text, gid int, mtime timestamp ) AS $$
+    DECLARE
+            parent_id int;
+    BEGIN
+        IF length(path_request) < 2 THEN
+            RETURN QUERY
+                SELECT root.name, file.uri, file.gid, file.created AS mtime
+                FROM tree() AS root
+                LEFT OUTER JOIN descriptors AS file
+                ON file.id = root.fd;
+        ELSE
+            SELECT tree.id INTO parent_id
+            FROM tree(numch('/', path_request)) AS tree
+            WHERE tree.path = path_request
+            LIMIT 1;
 
-        SELECT tree.id INTO parent_id
-        FROM tree(numch('/', path_request)) AS tree
-        WHERE tree.path = path_request
-        LIMIT 1;
-
-        RETURN QUERY SELECT path.id, path.name FROM pathnames AS path where path.parent = parent_id;
-    END IF;
-END; $$
+            RETURN QUERY
+                SELECT path.name, file.uri, file.gid, file.created AS mtime
+                FROM (
+                    SELECT path.name, path.fd
+                    FROM pathnames AS path
+                    WHERE path.parent = parent_id
+                ) AS path
+                LEFT OUTER JOIN descriptors AS file
+                ON file.id = path.fd;
+        END IF;
+    END; $$
 LANGUAGE plpgsql;
