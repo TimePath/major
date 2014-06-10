@@ -6,3 +6,5 @@ target/
 .svn/
 bin/
 obj/
+
+/packages/

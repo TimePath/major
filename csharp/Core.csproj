@@ -53,6 +53,9 @@
     <Reference Include="Mono.Fuse">
       <HintPath>FS\Lib\mono-fuse\lib\mono-fuse\Mono.Fuse.dll</HintPath>
     </Reference>
+    <Reference Include="NLog">
+      <HintPath>packages\NLog.3.0.0.0\lib\net40\NLog.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Net\Client\Net.Client.csproj">
@@ -67,5 +70,11 @@
       <Project>{450FD4CE-2BD6-4A38-BAB6-823086C346BD}</Project>
       <Name>FS.Consumer.FUSE</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="NLog.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>

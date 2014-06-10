@@ -8,33 +8,38 @@ namespace FS.Consumer.FUSE
 {
     public class FUSEConsumer : FileSystem, VFSConsumer
     {
-
+        private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger ();
         VFSProvider data;
+
         #region VFSConsumer implementation
+
         public void Start (VFSProvider data, MountOptions opts)
         {
             this.data = data;
             base.MountPoint = opts.MountPoint;
-            Console.WriteLine("Unmounting previous...");
+            logger.Debug ("Unmounting previous...");
             Process p = new Process {
                 StartInfo = new ProcessStartInfo {
                     FileName = "fusermount",
                     Arguments = "-u " + base.MountPoint
                 }
             };
-            p.Start();
-            p.WaitForExit();
-            Console.WriteLine("Done. Mounting...");
+            p.Start ();
+            p.WaitForExit ();
+            logger.Debug ("Done. Mounting...");
             base.Start ();
         }
 
         new public void Stop ()
         {
             base.Stop ();
-            Console.WriteLine ("Stopped FUSE");
+            logger.Debug ("Stopped FUSE");
         }
+
         #endregion
+
         #region FileSystem implementation
+
         protected override Errno OnGetPathStatus (string path, out Stat stbuf)
         {
             VFileInfo info;
@@ -101,6 +106,8 @@ namespace FS.Consumer.FUSE
             bytesWritten = (int)ubytesWritten;
             return 0;
         }
+
         #endregion
+
     }
 }

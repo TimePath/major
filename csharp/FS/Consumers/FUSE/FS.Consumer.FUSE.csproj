@@ -41,6 +41,11 @@
       <Link>libMonoFuseHelper.so</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="packages.config" />
+    <None Include="..\..\..\NLog.config">
+      <Link>NLog.config</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\FS.Core.csproj">
@@ -57,5 +62,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="Mono.Posix" />
+    <Reference Include="NLog">
+      <HintPath>..\..\..\packages\NLog.3.0.0.0\lib\net40\NLog.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>

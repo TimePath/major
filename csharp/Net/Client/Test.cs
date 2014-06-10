@@ -8,6 +8,8 @@ namespace Net.Client
 {
     class Program
     {
+        private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         public static void Main (string[] args)
         {
             ProtoConnection c = new ProtoConnection (new IPEndPoint (IPAddress.Parse ("127.0.0.1"), 9001));
@@ -18,7 +20,7 @@ namespace Net.Client
                     .SetPath ("/")
                     .Build ())
                 .Build ());
-                Console.WriteLine (fl.GetFile (0));
+                logger.Log (i % 1000 == 0 ? NLog.LogLevel.Info : NLog.LogLevel.Debug, fl.GetFile (0));
             }
         }
     }

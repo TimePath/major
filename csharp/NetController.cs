@@ -10,6 +10,8 @@ namespace GUI
 {
     class Connection : ProtoConnection
     {
+        private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger ();
+
         public Connection (IPEndPoint ipEndpoint) : base (ipEndpoint)
         {
         }
@@ -17,27 +19,28 @@ namespace GUI
         [Callback]
         void List (FileListing l)
         {
-            Console.WriteLine ("Got {0}", l);
+            logger.Debug ("Got {0}", l);
         }
     }
 
     public class NetController
     {
+        private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger ();
         ProtoConnection conn;
 
         public void Connect (string user, string password)
         {
             conn = new Connection (new IPEndPoint (IPAddress.Parse ("127.0.0.1"), 9001));
             conn.Connect (true);
-            Console.WriteLine ("Connected", user, password);
+            logger.Info ("Connected", user, password);
             new Thread (() => {
                 VFSConsumer c = new FUSEConsumer ();
                 AppDomain.CurrentDomain.ProcessExit += (s, e) => {
-                    Console.WriteLine ("Process exiting");
+                    logger.Debug ("Process exiting");
                     c.Stop ();
                 };
                 c.Start (new NetProvider (conn), opts);
-                Console.WriteLine ("Finished");
+                logger.Debug ("Finished");
             }).Start ();
         }
 

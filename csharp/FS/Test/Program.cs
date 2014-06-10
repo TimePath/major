@@ -6,22 +6,24 @@ namespace FS.Test
 {
     public class Program
     {
+        private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger ();
+
         public static void Main (string[] args)
         {
-            Console.WriteLine ("Starting");
+            logger.Info ("Starting");
             VFSConsumer c = new FUSEConsumer ();
             AppDomain.CurrentDomain.ProcessExit += (s, e) => {
-                Console.WriteLine ("Process exiting");
+                logger.Debug ("Process exiting");
                 c.Stop ();
             };
             c.Start (new MemoryProvider (), new MountOptions {
                 VolumeLabel = "Dokan",
                 //MountPoint = "f:\\",
-                MountPoint = Environment.GetEnvironmentVariable("HOME") + "/mnt/test1",
+                MountPoint = Environment.GetEnvironmentVariable ("HOME") + "/mnt/test1",
                 FileSystemName = "Virtual",
                 RemovableDrive = true
             });
-            Console.WriteLine ("Finished");
+            logger.Info ("Finished");
         }
     }
 }

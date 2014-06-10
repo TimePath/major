@@ -9,6 +9,8 @@ namespace FS.Consumer.Dokan
     public class DokanConsumer : DokanOperations, VFSConsumer
     {
 
+        private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         VFSProvider data;
         #region VFSConsumer implementation
         public void Start (VFSProvider data, MountOptions opts)
@@ -24,25 +26,25 @@ namespace FS.Consumer.Dokan
             int status = DokanNet.DokanMain (dokanOpts, this);
             switch (status) {
             case DokanNet.DOKAN_SUCCESS:
-                Console.WriteLine ("Clean shutdown");
+                logger.Debug ("Clean shutdown");
                 break;
             case DokanNet.DOKAN_DRIVE_LETTER_ERROR:
-                Console.WriteLine ("Drive letter error");
+                logger.Fatal ("Drive letter error");
                 break;
             case DokanNet.DOKAN_DRIVER_INSTALL_ERROR:
-                Console.WriteLine ("Driver install error");
+                logger.Fatal ("Driver install error");
                 break;
             case DokanNet.DOKAN_MOUNT_ERROR:
-                Console.WriteLine ("Mount error");
+                logger.Fatal ("Mount error");
                 break;
             case DokanNet.DOKAN_START_ERROR:
-                Console.WriteLine ("Start error");
+                logger.Fatal ("Start error");
                 break;
             case DokanNet.DOKAN_ERROR:
-                Console.WriteLine ("Unknown error");
+                logger.Fatal ("Unknown error");
                 break;
             default:
-                Console.WriteLine ("Unknown status: %d", status);
+                logger.Fatal ("Unknown status: %d", status);
                 break;
             }
         }

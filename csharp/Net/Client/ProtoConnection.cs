@@ -18,6 +18,8 @@ namespace Net.Client
 
     public class ProtoConnection
     {
+        private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         private Socket connection;
         private IPEndPoint remote;
         private NetworkStream netStream;
@@ -80,12 +82,13 @@ namespace Net.Client
                     }
                 }
                 if (m == null) {
-                    throw new SystemException ("No callback for '" + o.GetType () + "'.");
+                    logger.Debug ("No callback for '{0}'.", o.GetType ());
+                    continue;
                 }
                 try {
                     m.Invoke (this, new object[]{ o });
                 } catch (Exception e) {
-                    throw new SystemException ("Callback failed for '" + o.GetType () + "'.", e);
+                    logger.Warn ("Callback failed for '{0}': {1}.", o.GetType (), e);
                 }
             }
         }
@@ -132,7 +135,7 @@ namespace Net.Client
 
             connection.BeginConnect (remote, ar => {
                 connection.EndConnect (ar);
-                Console.WriteLine ("Connected to {0}", remote.ToString ());
+                logger.Info ("Connected to {0}", remote.ToString ());
                 initialized.Set ();
 
                 netStream = new NetworkStream (connection, false);

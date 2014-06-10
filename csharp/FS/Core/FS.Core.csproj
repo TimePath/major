@@ -35,4 +35,16 @@
   <ItemGroup>
     <Compile Include="Declarations.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="NLog">
+      <HintPath>..\..\packages\NLog.3.0.0.0\lib\net40\NLog.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="..\..\NLog.config">
+      <Link>NLog.config</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>
