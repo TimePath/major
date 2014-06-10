@@ -52,9 +52,26 @@ namespace Net.Client
 
         protected void Callback (object callbacks, Meta msg)
         {
-            foreach (var o in msg.AllFields.Values) {
+            foreach (var f in msg.AllFields.Values) {
+                var o = f as IMessageLite;
                 if (o == null)
                     continue;
+                Type type = o.GetType ();
+                LinkedList<IMessageLite> list;
+                lock (buffer) {
+                    if (!buffer.ContainsKey (o.GetType ())) {
+                        list = buffer [type] = new LinkedList<IMessageLite> ();
+                    } else {
+                        list = buffer [type];
+                    }
+                }
+                list.AddLast (o);
+                lock (locks) {
+                    if (locks.ContainsKey (type)) {
+                        locks [type].Set ();
+                    }
+                }
+
                 MethodInfo m = null;
                 foreach (var methodInfo in callbacks.GetType ().GetMethods (BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly)) {
                     if (IsApplicable (methodInfo, o)) {
@@ -70,6 +87,36 @@ namespace Net.Client
                 } catch (Exception e) {
                     throw new SystemException ("Callback failed for '" + o.GetType () + "'.", e);
                 }
+            }
+        }
+
+        Dictionary<Type, ManualResetEvent> locks = new Dictionary<Type, ManualResetEvent> ();
+        Dictionary<Type, LinkedList<IMessageLite>> buffer = new Dictionary<Type, LinkedList<IMessageLite>> ();
+
+        /// <summary>
+        /// Write the specified msg and wait for a response of type T.
+        /// This method will be the first to know before any callbacks are fired.
+        /// </summary>
+        /// <param name="msg">Message.</param>
+        /// <typeparam name="T">The 1st type parameter.</typeparam>
+        public T Write<T> (IMessageLite msg) where T : IMessageLite
+        {
+            Type type = typeof(T);
+            ManualResetEvent l;
+            lock (locks) {
+                if (!locks.ContainsKey (type)) { // Never expected one of these messages before, initialize first
+                    l = locks [type] = new ManualResetEvent (false);
+                } else { // Re-use existing
+                    l = locks [type];
+                    l.Reset ();
+                }
+            }
+            Write (msg);
+            l.WaitOne ();
+            lock (buffer) {
+                IMessageLite response = buffer [type].First.Value;
+                buffer [type].RemoveFirst ();
+                return (T)response;
             }
         }
 
