@@ -3,13 +3,13 @@ using Gtk;
 
 namespace GUI.GTK
 {
-    public partial class MainWindow: Gtk.Window
+    public partial class MainWindow: Gtk.Dialog
     {
         GUI.Controller c = new GUI.Controller ();
         StatusIcon statusIcon;
         Menu popupMenu;
 
-        public MainWindow () : base (Gtk.WindowType.Toplevel)
+        public MainWindow ()
         {
             Build ();
 
@@ -22,16 +22,15 @@ namespace GUI.GTK
 
             ImageMenuItem quit = new ImageMenuItem ("Exit");
             quit.Image = new Image (Stock.Quit, IconSize.Menu);
-            quit.Activated += delegate {
+            quit.Activated += (object sender, EventArgs e) => {
                 Application.Quit ();
             };
-
             popupMenu.Add (quit);
 
             statusIcon = new StatusIcon ();
             statusIcon.Pixbuf = c.Icon.Bitmap.ToPixbuf ();
             statusIcon.Activate += Open;
-            statusIcon.PopupMenu += delegate {
+            statusIcon.PopupMenu += (object o, PopupMenuArgs args) => {
                 popupMenu.ShowAll ();
                 popupMenu.Popup ();
             };
@@ -44,14 +43,9 @@ namespace GUI.GTK
             c.Browse ();
         }
 
-        protected void Exit (object sender, EventArgs args)
+        protected void OnDeleteEvent (object sender, EventArgs args)
         {
             Application.Quit ();
-        }
-
-        protected void WindowClose (object sender, DeleteEventArgs args)
-        {
-
         }
 
         protected void OnConnectButtonClicked (object sender, EventArgs e)

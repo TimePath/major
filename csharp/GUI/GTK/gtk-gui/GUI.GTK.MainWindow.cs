@@ -4,10 +4,9 @@ namespace GUI.GTK
 {
 	public partial class MainWindow
 	{
-		private global::Gtk.Table table1;
-		private global::Gtk.Button connectButton;
 		private global::Gtk.Entry entry1;
 		private global::Gtk.Entry entry2;
+		private global::Gtk.Button connectButton;
 
 		protected virtual void Build ()
 		{
@@ -17,54 +16,55 @@ namespace GUI.GTK
 			this.Title = global::Mono.Unix.Catalog.GetString ("MainWindow");
 			this.WindowPosition = ((global::Gtk.WindowPosition)(4));
 			this.BorderWidth = ((uint)(3));
-			// Container child GUI.GTK.MainWindow.Gtk.Container+ContainerChild
-			this.table1 = new global::Gtk.Table (((uint)(3)), ((uint)(1)), false);
-			this.table1.Name = "table1";
-			this.table1.RowSpacing = ((uint)(6));
-			this.table1.ColumnSpacing = ((uint)(6));
-			// Container child table1.Gtk.Table+TableChild
-			this.connectButton = new global::Gtk.Button ();
-			this.connectButton.CanFocus = true;
-			this.connectButton.Name = "connectButton";
-			this.connectButton.UseUnderline = true;
-			this.connectButton.Label = global::Mono.Unix.Catalog.GetString ("Connect");
-			this.table1.Add (this.connectButton);
-			global::Gtk.Table.TableChild w1 = ((global::Gtk.Table.TableChild)(this.table1 [this.connectButton]));
-			w1.TopAttach = ((uint)(2));
-			w1.BottomAttach = ((uint)(3));
-			w1.XOptions = ((global::Gtk.AttachOptions)(4));
-			w1.YOptions = ((global::Gtk.AttachOptions)(4));
-			// Container child table1.Gtk.Table+TableChild
+			this.Resizable = false;
+			this.AllowGrow = false;
+			this.AllowShrink = true;
+			// Internal child GUI.GTK.MainWindow.VBox
+			global::Gtk.VBox w1 = this.VBox;
+			w1.Name = "__gtksharp_73_Stetic_TopLevelDialog_VBox";
+			// Container child __gtksharp_73_Stetic_TopLevelDialog_VBox.Gtk.Box+BoxChild
 			this.entry1 = new global::Gtk.Entry ();
 			this.entry1.CanFocus = true;
 			this.entry1.Name = "entry1";
 			this.entry1.IsEditable = true;
 			this.entry1.InvisibleChar = '●';
-			this.table1.Add (this.entry1);
-			global::Gtk.Table.TableChild w2 = ((global::Gtk.Table.TableChild)(this.table1 [this.entry1]));
-			w2.XOptions = ((global::Gtk.AttachOptions)(4));
-			w2.YOptions = ((global::Gtk.AttachOptions)(4));
-			// Container child table1.Gtk.Table+TableChild
+			w1.Add (this.entry1);
+			global::Gtk.Box.BoxChild w2 = ((global::Gtk.Box.BoxChild)(w1 [this.entry1]));
+			w2.Position = 0;
+			w2.Expand = false;
+			w2.Fill = false;
+			// Container child __gtksharp_73_Stetic_TopLevelDialog_VBox.Gtk.Box+BoxChild
 			this.entry2 = new global::Gtk.Entry ();
 			this.entry2.CanFocus = true;
 			this.entry2.Name = "entry2";
 			this.entry2.IsEditable = true;
 			this.entry2.Visibility = false;
 			this.entry2.InvisibleChar = '●';
-			this.table1.Add (this.entry2);
-			global::Gtk.Table.TableChild w3 = ((global::Gtk.Table.TableChild)(this.table1 [this.entry2]));
-			w3.TopAttach = ((uint)(1));
-			w3.BottomAttach = ((uint)(2));
-			w3.XOptions = ((global::Gtk.AttachOptions)(4));
-			w3.YOptions = ((global::Gtk.AttachOptions)(4));
-			this.Add (this.table1);
+			w1.Add (this.entry2);
+			global::Gtk.Box.BoxChild w3 = ((global::Gtk.Box.BoxChild)(w1 [this.entry2]));
+			w3.Position = 1;
+			w3.Expand = false;
+			w3.Fill = false;
+			// Internal child GUI.GTK.MainWindow.ActionArea
+			global::Gtk.HButtonBox w4 = this.ActionArea;
+			w4.Name = "__gtksharp_73_Stetic_TopLevelDialog_ActionArea";
+			// Container child __gtksharp_73_Stetic_TopLevelDialog_ActionArea.Gtk.ButtonBox+ButtonBoxChild
+			this.connectButton = new global::Gtk.Button ();
+			this.connectButton.CanFocus = true;
+			this.connectButton.Name = "connectButton";
+			this.connectButton.UseUnderline = true;
+			this.connectButton.Label = global::Mono.Unix.Catalog.GetString ("Connect");
+			this.AddActionWidget (this.connectButton, 0);
+			global::Gtk.ButtonBox.ButtonBoxChild w5 = ((global::Gtk.ButtonBox.ButtonBoxChild)(w4 [this.connectButton]));
+			w5.Expand = false;
+			w5.Fill = false;
 			if ((this.Child != null)) {
 				this.Child.ShowAll ();
 			}
 			this.DefaultWidth = 170;
-			this.DefaultHeight = 81;
+			this.DefaultHeight = 75;
 			this.Show ();
-			this.DeleteEvent += new global::Gtk.DeleteEventHandler (this.WindowClose);
+			this.DeleteEvent += new global::Gtk.DeleteEventHandler (this.OnDeleteEvent);
 			this.connectButton.Clicked += new global::System.EventHandler (this.OnConnectButtonClicked);
 		}
 	}
