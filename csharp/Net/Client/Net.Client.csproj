@@ -10,6 +10,7 @@
     <RootNamespace>Net.Client</RootNamespace>
     <AssemblyName>Client</AssemblyName>
     <StartupObject>Net.Client.Program</StartupObject>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -38,13 +39,13 @@
     <Compile Include="Test.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Proto\" />
+    <Folder Include="Utils\" />
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="System" />
     <Reference Include="Google.ProtocolBuffers">
       <HintPath>..\..\..\protobuf\lib\net40\Google.ProtocolBuffers.dll</HintPath>
     </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Proto\" />
-    <Folder Include="Utils\" />
   </ItemGroup>
 </Project>

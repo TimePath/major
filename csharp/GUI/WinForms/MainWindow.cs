@@ -20,13 +20,11 @@ namespace GUI.WinForms
             notifyIcon.ContextMenu = new ContextMenu (menuItems);
             notifyIcon.DoubleClick += Open;
             notifyIcon.Visible = true;
-
-            c.Start ();
         }
 
         void Open (object sender, EventArgs e)
         {
-            c.Mount.Open ();
+            c.Browse ();
         }
 
         void Exit (object sender, EventArgs e)

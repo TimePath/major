@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Mono.Fuse;
 using Mono.Unix.Native;
-using System.Diagnostics;
 
 namespace FS.Consumer.FUSE
 {

@@ -1,8 +1,8 @@
 using System;
-using Dokan;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using Dokan;
 
 namespace FS.Consumer.Dokan
 {

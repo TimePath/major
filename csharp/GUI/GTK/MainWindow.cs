@@ -37,13 +37,11 @@ namespace GUI.GTK
             };
             statusIcon.Tooltip = c.Icon.Tooltip;
             statusIcon.Visible = true;
-
-            c.Start ();
         }
 
         protected void Open (object sender, EventArgs args)
         {
-            c.Mount.Open ();
+            c.Browse ();
         }
 
         protected void Exit (object sender, EventArgs args)
@@ -54,6 +52,11 @@ namespace GUI.GTK
         protected void WindowClose (object sender, DeleteEventArgs args)
         {
 
+        }
+
+        protected void OnConnectButtonClicked (object sender, EventArgs e)
+        {
+            c.Connect (entry1.Text, entry2.Text);
         }
     }
 }

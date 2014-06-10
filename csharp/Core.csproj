@@ -6,10 +6,11 @@
     <ProductVersion>12.0.0</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{782005D2-14CC-479E-ABC7-7777DE1F70EB}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <OutputType>Exe</OutputType>
     <RootNamespace>GUI</RootNamespace>
     <AssemblyName>GUI</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <StartupObject>GUI.Program</StartupObject>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -36,12 +37,35 @@
     <Compile Include="Controller.cs" />
     <Compile Include="Utils\OS.cs" />
     <Compile Include="Utils\IconFactory.cs" />
+    <Compile Include="NetController.cs" />
+    <Compile Include="NetProvider.cs" />
+    <Compile Include="Program.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Utils\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Drawing" />
     <Reference Include="System" />
+    <Reference Include="Google.ProtocolBuffers">
+      <HintPath>..\protobuf\lib\net40\Google.ProtocolBuffers.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Fuse">
+      <HintPath>FS\Lib\mono-fuse\lib\mono-fuse\Mono.Fuse.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Utils\" />
+    <ProjectReference Include="Net\Client\Net.Client.csproj">
+      <Project>{46B4C44B-DE78-4A2D-BF46-E5697AB1AE58}</Project>
+      <Name>Net.Client</Name>
+    </ProjectReference>
+    <ProjectReference Include="FS\Core\FS.Core.csproj">
+      <Project>{F14FD851-5657-4819-9EC1-64E6EBA36218}</Project>
+      <Name>FS.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="FS\Consumers\FUSE\FS.Consumer.FUSE.csproj">
+      <Project>{450FD4CE-2BD6-4A38-BAB6-823086C346BD}</Project>
+      <Name>FS.Consumer.FUSE</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>
