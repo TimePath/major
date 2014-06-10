@@ -20,8 +20,9 @@ option (google.protobuf.csharp_file_options).umbrella_classname = "Messages";
 // Messages
 
 message Meta {
-    optional ListRequest list_request = 1;
-    optional FileListing files = 2;
+    required int32 tag = 1;
+    optional ListRequest list_request = 2;
+    optional FileListing files = 3;
 }
 
 message ListRequest {

@@ -8,7 +8,7 @@ namespace Net.Client
 {
     class Program
     {
-        private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+        private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger ();
 
         public static void Main (string[] args)
         {
@@ -16,10 +16,11 @@ namespace Net.Client
             c.Connect (true);
             for (int i = 0; i < 100000; i++) {
                 FileListing fl = c.Write<FileListing> (Meta.CreateBuilder ()
-                .SetListRequest (ListRequest.CreateBuilder ()
-                    .SetPath ("/")
-                    .Build ())
-                .Build ());
+                    .SetTag (i)
+                    .SetListRequest (ListRequest.CreateBuilder ()
+                        .SetPath ("/")
+                        .Build ())
+                    .Build ());
                 logger.Log (i % 1000 == 0 ? NLog.LogLevel.Info : NLog.LogLevel.Debug, fl.GetFile (0));
             }
         }

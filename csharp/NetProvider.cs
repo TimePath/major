@@ -89,17 +89,17 @@ namespace GUI
         int VFSProvider.List (string path, out IList<VFileInfo> files)
         {
             files = new List<VFileInfo> ();
-            conn.Write (Meta.CreateBuilder ()
-                .SetListRequest (
-                    ListRequest.CreateBuilder ()
+            FileListing fl = conn.Write<FileListing> (Meta.CreateBuilder ()
+                .SetTag ((int)DateTime.Now.Ticks)
+                .SetListRequest (ListRequest.CreateBuilder ()
                     .SetPath (path)
-                    .Build())
-                .Build());
-            if (path == ROOT) {
+                    .Build ())
+                .Build ());
+            foreach (var file in fl.FileList) {
                 files.Add (new VFileInfo {
-                    Attributes = FileAttributes.Normal,
+                    Attributes = FileAttributes.Directory,
                     Length = 42,
-                    Name = "Dummy data.txt"
+                    Name = file.Name
                 });
             }
             return VFSConstants.SUCCESS;
