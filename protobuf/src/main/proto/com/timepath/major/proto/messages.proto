@@ -40,6 +40,8 @@ message File {
     required FileType type = 2;
 
     optional int64 last_modified = 3;
+
+    optional int64 size = 4;
 }
 
 message InfoRequest { // return File

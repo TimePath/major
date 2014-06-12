@@ -23,7 +23,7 @@ namespace GUI
             return new VFileInfo {
                 Name = file.Name,
                 Attributes = (file.Type == Major.Proto.File.Types.FileType.DIRECTORY ? FileAttributes.Directory : FileAttributes.Normal),
-                Length = (file.Type == Major.Proto.File.Types.FileType.DIRECTORY ? 0 : 42),
+                Length = (file.Type == Major.Proto.File.Types.FileType.DIRECTORY ? 0 : file.Size),
                 LastAccessTime = DateTime.Now,
                 LastWriteTime = file.HasLastModified ? file.LastModified.ToDateTime () : DateTime.Now,
                 CreationTime = DateTime.Now
@@ -66,7 +66,10 @@ namespace GUI
                     .SetLength (buffer.Length)
                     .Build ())
                 .Build ());
-
+            if (!chunk.HasData) {
+                readBytes = 0;
+                return VFSConstants.ERROR;
+            }
             readBytes = (uint)chunk.Data.Length;
             chunk.Data.CopyTo (buffer, (int)offset);
             return VFSConstants.SUCCESS;
