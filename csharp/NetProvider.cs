@@ -69,38 +69,42 @@ namespace GUI
             return VFSConstants.SUCCESS;
         }
 
+        VFileInfo wrap (Major.Proto.File file)
+        {
+            return new VFileInfo {
+                Name = file.Name,
+                Attributes = (file.Type == Major.Proto.File.Types.FileType.DIRECTORY ? FileAttributes.Directory : FileAttributes.Normal),
+                Length = (file.Type == Major.Proto.File.Types.FileType.DIRECTORY ? 0 : 42),
+                LastAccessTime = DateTime.Now,
+                LastWriteTime = file.HasLastModified ? file.LastModified.ToDateTime() : DateTime.Now,
+                CreationTime = DateTime.Now
+            };
+        }
+
         int VFSProvider.GetFileInformation (string filename, out VFileInfo info)
         {
-            info = new VFileInfo ();
-            if (filename == ROOT) {
-                info.Attributes = FileAttributes.Directory;
-                info.Length = 0;
-            } else {
-                info.Attributes = FileAttributes.Normal;
-                info.Length = 42;
-            }
-            info.LastAccessTime = DateTime.Now;
-            info.LastWriteTime = DateTime.Now;
-            info.CreationTime = DateTime.Now;
+            InfoResponse ir = conn.Write<InfoResponse> (Meta.CreateBuilder ()
+                .SetTag ((int)DateTime.Now.Ticks)
+                .SetInfoRequest (InfoRequest.CreateBuilder ()
+                    .SetPath (filename)
+                    .Build ())
+                .Build ());
+            info = wrap (ir.File);
 
             return VFSConstants.SUCCESS;
         }
 
         int VFSProvider.List (string path, out IList<VFileInfo> files)
         {
-            files = new List<VFileInfo> ();
-            FileListing fl = conn.Write<FileListing> (Meta.CreateBuilder ()
+            ListResponse lr = conn.Write<ListResponse> (Meta.CreateBuilder ()
                 .SetTag ((int)DateTime.Now.Ticks)
                 .SetListRequest (ListRequest.CreateBuilder ()
                     .SetPath (path)
                     .Build ())
                 .Build ());
-            foreach (var file in fl.FileList) {
-                files.Add (new VFileInfo {
-                    Attributes = FileAttributes.Directory,
-                    Length = 42,
-                    Name = file.Name
-                });
+            files = new List<VFileInfo> ();
+            foreach (var file in lr.FileList) {
+                files.Add (wrap(file));
             }
             return VFSConstants.SUCCESS;
         }

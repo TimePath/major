@@ -17,9 +17,9 @@ namespace GUI
         }
 
         [Callback]
-        void List (FileListing l)
+        void Info (InfoResponse i)
         {
-            logger.Debug ("Got {0}", l);
+            logger.Debug ("Got {0}", i);
         }
     }
 

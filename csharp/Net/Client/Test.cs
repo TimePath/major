@@ -15,7 +15,7 @@ namespace Net.Client
             ProtoConnection c = new ProtoConnection (new IPEndPoint (IPAddress.Parse ("127.0.0.1"), 9001));
             c.Connect (true);
             for (int i = 0; i < 100000; i++) {
-                FileListing fl = c.Write<FileListing> (Meta.CreateBuilder ()
+                ListResponse fl = c.Write<ListResponse> (Meta.CreateBuilder ()
                     .SetTag (i)
                     .SetListRequest (ListRequest.CreateBuilder ()
                         .SetPath ("/")

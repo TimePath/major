@@ -34,7 +34,6 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Compile Include="FUSEConsumer.cs" />
-    <Compile Include="Utils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Lib\mono-fuse\lib\libMonoFuseHelper.so">

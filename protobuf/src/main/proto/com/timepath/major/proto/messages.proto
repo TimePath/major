@@ -21,25 +21,37 @@ option (google.protobuf.csharp_file_options).umbrella_classname = "Messages";
 
 message Meta {
     required int32 tag = 1;
-    optional ListRequest list_request = 2;
-    optional FileListing files = 3;
+    optional InfoRequest info_request = 2;
+    optional InfoResponse file_info = 3;
+    optional ListRequest list_request = 4;
+    optional ListResponse files = 5;
+}
+
+message File {
+    required string name = 1;
+
+    enum FileType {
+        FILE = 0;
+        DIRECTORY = 1;
+    }
+
+    required FileType type = 2;
+
+    optional int64 last_modified = 3;
+}
+
+message InfoRequest { // return File
+    required string path = 1;
+}
+
+message InfoResponse {
+    optional File file = 1;
 }
 
 message ListRequest {
     required string path = 1;
 }
 
-message FileListing {
-    message File {
-        required string name = 1;
-        optional string body = 2;
-
-        enum FileType {
-            FILE = 0;
-            DIRECTORY = 1;
-        }
-
-        optional FileType type = 3 [default = FILE];
-    }
+message ListResponse {
     repeated File file = 1;
 }

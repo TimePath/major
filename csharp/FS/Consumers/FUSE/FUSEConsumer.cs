@@ -50,6 +50,7 @@ namespace FS.Consumer.FUSE
             stbuf.st_atime = info.LastAccessTime.ToUnix ();
             stbuf.st_ctime = info.CreationTime.ToUnix ();
             stbuf.st_mtime = info.LastWriteTime.ToUnix ();
+            stbuf.st_mtime_nsec = info.LastWriteTime.Nanoseconds();
             stbuf.st_size = info.IsDirectory () ? 0 : info.Length;
             stbuf.st_uid = Syscall.getuid ();
             stbuf.st_gid = Syscall.getgid ();
@@ -69,9 +70,9 @@ namespace FS.Consumer.FUSE
         protected override Errno OnReadDirectory (string path, OpenedPathInfo fi, out IEnumerable<DirectoryEntry> paths)
         {
             paths = null;
-            if (path != "/") {
-                return Errno.ENOENT;
-            }
+            //if (path != "/") {
+            //    return Errno.ENOENT;
+            //}
 
             IList<VFileInfo> vfiles;
             data.List (path, out vfiles);
