@@ -18,7 +18,17 @@ namespace GUI
             this.conn = conn;
         }
 
-        string ROOT = "/";
+        VFileInfo wrap (Major.Proto.File file)
+        {
+            return new VFileInfo {
+                Name = file.Name,
+                Attributes = (file.Type == Major.Proto.File.Types.FileType.DIRECTORY ? FileAttributes.Directory : FileAttributes.Normal),
+                Length = (file.Type == Major.Proto.File.Types.FileType.DIRECTORY ? 0 : 42),
+                LastAccessTime = DateTime.Now,
+                LastWriteTime = file.HasLastModified ? file.LastModified.ToDateTime () : DateTime.Now,
+                CreationTime = DateTime.Now
+            };
+        }
 
         #region implemented abstract members of VFSProvider
 
@@ -49,12 +59,16 @@ namespace GUI
 
         int VFSProvider.Read (string filename, long offset, byte[] buffer, out uint readBytes)
         {
-            readBytes = 0;
-            //Buffer.BlockCopy (dummy, 0, buf, 0, dummy.Length);
-            readBytes = (uint)Math.Min (42, buffer.Length);
-            for (int i = 0; i < readBytes; i++) {
-                buffer [i] = 42;
-            }
+            FileChunk chunk = conn.Write<FileChunk> (conn.CreateBuilder ()
+                .SetChunkRequest (ChunkRequest.CreateBuilder ()
+                    .SetPath (filename)
+                    .SetOffset (offset)
+                    .SetLength (buffer.Length)
+                    .Build ())
+                .Build ());
+
+            readBytes = (uint)chunk.Data.Length;
+            chunk.Data.CopyTo (buffer, (int)offset);
             return VFSConstants.SUCCESS;
         }
 
@@ -69,22 +83,9 @@ namespace GUI
             return VFSConstants.SUCCESS;
         }
 
-        VFileInfo wrap (Major.Proto.File file)
-        {
-            return new VFileInfo {
-                Name = file.Name,
-                Attributes = (file.Type == Major.Proto.File.Types.FileType.DIRECTORY ? FileAttributes.Directory : FileAttributes.Normal),
-                Length = (file.Type == Major.Proto.File.Types.FileType.DIRECTORY ? 0 : 42),
-                LastAccessTime = DateTime.Now,
-                LastWriteTime = file.HasLastModified ? file.LastModified.ToDateTime() : DateTime.Now,
-                CreationTime = DateTime.Now
-            };
-        }
-
         int VFSProvider.GetFileInformation (string filename, out VFileInfo info)
         {
-            InfoResponse ir = conn.Write<InfoResponse> (Meta.CreateBuilder ()
-                .SetTag ((int)DateTime.Now.Ticks)
+            InfoResponse ir = conn.Write<InfoResponse> (conn.CreateBuilder ()
                 .SetInfoRequest (InfoRequest.CreateBuilder ()
                     .SetPath (filename)
                     .Build ())
@@ -96,15 +97,14 @@ namespace GUI
 
         int VFSProvider.List (string path, out IList<VFileInfo> files)
         {
-            ListResponse lr = conn.Write<ListResponse> (Meta.CreateBuilder ()
-                .SetTag ((int)DateTime.Now.Ticks)
+            ListResponse lr = conn.Write<ListResponse> (conn.CreateBuilder ()
                 .SetListRequest (ListRequest.CreateBuilder ()
                     .SetPath (path)
                     .Build ())
                 .Build ());
             files = new List<VFileInfo> ();
             foreach (var file in lr.FileList) {
-                files.Add (wrap(file));
+                files.Add (wrap (file));
             }
             return VFSConstants.SUCCESS;
         }

@@ -25,6 +25,8 @@ message Meta {
     optional InfoResponse file_info = 3;
     optional ListRequest list_request = 4;
     optional ListResponse files = 5;
+    optional ChunkRequest chunk_request = 6;
+    optional FileChunk chunk = 7;
 }
 
 message File {
@@ -54,4 +56,14 @@ message ListRequest {
 
 message ListResponse {
     repeated File file = 1;
+}
+
+message ChunkRequest {
+    required string path = 1;
+    required int64 offset = 2;
+    required int64 length = 3;
+}
+
+message FileChunk {
+    optional bytes data = 1;
 }
