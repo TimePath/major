@@ -103,6 +103,22 @@ public class DatabaseConnection extends JDBCFS {
         }
 
         @Override
+        public long length() {
+            try {
+                URI u = new URI(uri);
+                try {
+                    int length = u.toURL().openConnection().getContentLength();
+                    if(length >= 0) return length;
+                } catch(IOException e) {
+                    LOG.log(Level.SEVERE, "Bad URL", e);
+                }
+            } catch(URISyntaxException e) {
+                LOG.log(Level.SEVERE, "Bad URI", e);
+            }
+            return super.length();
+        }
+
+        @Override
         public Collection<? extends SimpleVFile> list() {
             return DatabaseConnection.this.list(path);
         }
