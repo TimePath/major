@@ -12,7 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Forces all access through a {@link com.timepath.major.vfs.SecurityController}
+ * Decorates files to force all access through a {@link com.timepath.major.vfs.SecurityController}
  *
  * @author TimePath
  */
@@ -21,9 +21,9 @@ public class SecurityAdapter extends SimpleVFile {
     private final SimpleVFile        data;
     private final SecurityController security;
 
-    public SecurityAdapter(SimpleVFile data, SecurityController security) {
+    public SecurityAdapter(SimpleVFile data, SecurityController policy) {
         this.data = data;
-        this.security = security;
+        this.security = policy;
     }
 
     public static void registerMissingFileHandler(MissingFileHandler h) {SimpleVFile.registerMissingFileHandler(h);}
@@ -108,7 +108,9 @@ public class SecurityAdapter extends SimpleVFile {
     public boolean setExecutable(boolean executable) {return data.setExecutable(executable);}
 
     @Override
-    public boolean setExecutable(boolean executable, boolean ownerOnly) {return data.setExecutable(executable, ownerOnly);}
+    public boolean setExecutable(boolean executable, boolean ownerOnly) {
+        return data.setExecutable(executable, ownerOnly);
+    }
 
     @Override
     public boolean setLastModified(long time) {return data.setLastModified(time);}
@@ -125,15 +127,9 @@ public class SecurityAdapter extends SimpleVFile {
     @Override
     public boolean setWritable(boolean writable, boolean ownerOnly) {return data.setWritable(writable, ownerOnly);}
 
-    /**
-     * Very important not to delegate here
-     *
-     * @param newParent
-     *
-     * @return
-     */
     @Override
     public boolean setParent(SimpleVFile newParent) {
+        // Very important not to delegate here
         return super.setParent(newParent);
     }
 

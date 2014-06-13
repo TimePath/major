@@ -19,7 +19,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Controls how files are to be accessed from the database
+ * Controls how files are to be accessed from a database
+ * <p/>
+ * This implementation relies on stored procedures rather than in-code
  *
  * @author TimePath
  */
