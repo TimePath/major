@@ -156,6 +156,10 @@ namespace Net.Client
             return (T)GetFuture (type).Pop ();
         }
 
+        /// <summary>
+        /// Write the specified msg. Does not wait for a response.
+        /// </summary>
+        /// <param name="msg">Message.</param>
         public void Write (IMessageLite msg)
         {
             if (netStream != null) // Allow for testing without a server
