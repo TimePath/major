@@ -26,8 +26,6 @@ public class SecurityAdapter extends SimpleVFile {
         this.security = policy;
     }
 
-    public static void registerMissingFileHandler(MissingFileHandler h) {SimpleVFile.registerMissingFileHandler(h);}
-
     @Override
     public void addFileChangeListener(FileChangeListener listener) {data.addFileChangeListener(listener);}
 
@@ -63,8 +61,9 @@ public class SecurityAdapter extends SimpleVFile {
      * TODO: be smart about the original collection type rather than assume list
      *
      * @param unwrapped
+     *         A collection of files to be decorated with the current security settings
      *
-     * @return
+     * @return The original list, decorated
      */
     private List<SimpleVFile> wrap(final Collection<? extends SimpleVFile> unwrapped) {
         if(unwrapped == null) return null;
@@ -127,9 +126,13 @@ public class SecurityAdapter extends SimpleVFile {
     @Override
     public boolean setWritable(boolean writable, boolean ownerOnly) {return data.setWritable(writable, ownerOnly);}
 
+    /**
+     * This method intentionally does not delegate
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("EmptyMethod")
     @Override
     public boolean setParent(SimpleVFile newParent) {
-        // Very important not to delegate here
         return super.setParent(newParent);
     }
 
