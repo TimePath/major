@@ -106,6 +106,7 @@ public class DatabaseConnection extends JDBCFS {
 
         @Override
         public long length() {
+            if(uri == null) return list().size(); // Directory
             try {
                 URI u = new URI(uri);
                 try {
