@@ -131,7 +131,6 @@ public class SecurityAdapter extends SimpleVFile {
      * {@inheritDoc}
      */
     @SuppressWarnings("EmptyMethod")
-    @Override
     public boolean setParent(SimpleVFile newParent) {
         return super.setParent(newParent);
     }
