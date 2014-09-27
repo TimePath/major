@@ -16,9 +16,7 @@ public abstract class SecurityController {
     /**
      * Called in response to {@link com.timepath.vfs.SimpleVFile#openStream()}
      *
-     * @param file
-     *         The requested file
-     *
+     * @param file The requested file
      * @return Potentially modified {@code file}
      */
     public InputStream openStream(final SimpleVFile file) {
@@ -28,10 +26,8 @@ public abstract class SecurityController {
     /**
      * Called in response to {@link com.timepath.vfs.SimpleVFile#add(com.timepath.vfs.SimpleVFile)}
      *
-     * @param parent
-     *         The parent file
-     * @param file
-     *         The file
+     * @param parent The parent file
+     * @param file   The file
      */
     public void add(final SimpleVFile parent, final SimpleVFile file) {
         parent.add(file);
@@ -40,9 +36,7 @@ public abstract class SecurityController {
     /**
      * Called in response to {@link com.timepath.vfs.SimpleVFile#list()}
      *
-     * @param file
-     *         The file
-     *
+     * @param file The file
      * @return Potentially modified {@code file.list()}
      */
     public Collection<? extends SimpleVFile> list(final SimpleVFile file) {
@@ -52,9 +46,7 @@ public abstract class SecurityController {
     /**
      * Called in response to {@link com.timepath.vfs.SimpleVFile#get(String)}
      *
-     * @param file
-     *         The file
-     *
+     * @param file The file
      * @return Potentially modified {@code file}
      */
     public SimpleVFile get(final SimpleVFile file) {

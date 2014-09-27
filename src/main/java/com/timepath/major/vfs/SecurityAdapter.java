@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class SecurityAdapter extends SimpleVFile {
 
-    private final SimpleVFile        data;
+    private final SimpleVFile data;
     private final SecurityController security;
 
     public SecurityAdapter(SimpleVFile data, SecurityController policy) {
@@ -27,25 +27,39 @@ public class SecurityAdapter extends SimpleVFile {
     }
 
     @Override
-    public void addFileChangeListener(FileChangeListener listener) {data.addFileChangeListener(listener);}
+    public void addFileChangeListener(FileChangeListener listener) {
+        data.addFileChangeListener(listener);
+    }
 
     @Override
-    public boolean canExecute() {return data.canExecute();}
+    public boolean canExecute() {
+        return data.canExecute();
+    }
 
     @Override
-    public boolean canRead() {return data.canRead();}
+    public boolean canRead() {
+        return data.canRead();
+    }
 
     @Override
-    public boolean canWrite() {return data.canWrite();}
+    public boolean canWrite() {
+        return data.canWrite();
+    }
 
     @Override
-    public boolean createNewFile() {return data.createNewFile();}
+    public boolean createNewFile() {
+        return data.createNewFile();
+    }
 
     @Override
-    public boolean delete() {return data.delete();}
+    public boolean delete() {
+        return data.delete();
+    }
 
     @Override
-    public boolean exists() {return data.exists();}
+    public boolean exists() {
+        return data.exists();
+    }
 
     @Override
     public SimpleVFile getParent() {
@@ -60,15 +74,13 @@ public class SecurityAdapter extends SimpleVFile {
     /**
      * TODO: be smart about the original collection type rather than assume list
      *
-     * @param unwrapped
-     *         A collection of files to be decorated with the current security settings
-     *
+     * @param unwrapped A collection of files to be decorated with the current security settings
      * @return The original list, decorated
      */
     private List<SimpleVFile> wrap(final Collection<? extends SimpleVFile> unwrapped) {
-        if(unwrapped == null) return null;
+        if (unwrapped == null) return null;
         List<SimpleVFile> wrapped = new LinkedList<>();
-        for(SimpleVFile v : unwrapped) {
+        for (SimpleVFile v : unwrapped) {
             wrapped.add(wrap(v));
         }
         return wrapped;
@@ -80,31 +92,49 @@ public class SecurityAdapter extends SimpleVFile {
     }
 
     @Override
-    public String getPath() {return data.getPath();}
+    public String getPath() {
+        return data.getPath();
+    }
 
     @Override
-    public long getTotalSpace() {return data.getTotalSpace();}
+    public long getTotalSpace() {
+        return data.getTotalSpace();
+    }
 
     @Override
-    public long getUsableSpace() {return data.getUsableSpace();}
+    public long getUsableSpace() {
+        return data.getUsableSpace();
+    }
 
     @Override
-    public boolean isDirectory() {return data.isDirectory();}
+    public boolean isDirectory() {
+        return data.isDirectory();
+    }
 
     @Override
-    public boolean isFile() {return data.isFile();}
+    public boolean isFile() {
+        return data.isFile();
+    }
 
     @Override
-    public long lastModified() {return data.lastModified();}
+    public long lastModified() {
+        return data.lastModified();
+    }
 
     @Override
-    public long length() {return data.length();}
+    public long length() {
+        return data.length();
+    }
 
     @Override
-    public boolean renameTo(SimpleVFile dest) {return data.renameTo(dest);}
+    public boolean renameTo(SimpleVFile dest) {
+        return data.renameTo(dest);
+    }
 
     @Override
-    public boolean setExecutable(boolean executable) {return data.setExecutable(executable);}
+    public boolean setExecutable(boolean executable) {
+        return data.setExecutable(executable);
+    }
 
     @Override
     public boolean setExecutable(boolean executable, boolean ownerOnly) {
@@ -112,19 +142,29 @@ public class SecurityAdapter extends SimpleVFile {
     }
 
     @Override
-    public boolean setLastModified(long time) {return data.setLastModified(time);}
+    public boolean setLastModified(long time) {
+        return data.setLastModified(time);
+    }
 
     @Override
-    public boolean setReadable(boolean readable) {return data.setReadable(readable);}
+    public boolean setReadable(boolean readable) {
+        return data.setReadable(readable);
+    }
 
     @Override
-    public boolean setReadable(boolean readable, boolean ownerOnly) {return data.setReadable(readable, ownerOnly);}
+    public boolean setReadable(boolean readable, boolean ownerOnly) {
+        return data.setReadable(readable, ownerOnly);
+    }
 
     @Override
-    public boolean setWritable(boolean writable) {return data.setWritable(writable);}
+    public boolean setWritable(boolean writable) {
+        return data.setWritable(writable);
+    }
 
     @Override
-    public boolean setWritable(boolean writable, boolean ownerOnly) {return data.setWritable(writable, ownerOnly);}
+    public boolean setWritable(boolean writable, boolean ownerOnly) {
+        return data.setWritable(writable, ownerOnly);
+    }
 
     /**
      * This method intentionally does not delegate
@@ -148,29 +188,41 @@ public class SecurityAdapter extends SimpleVFile {
 
     @Override
     public SimpleVFile addAll(Iterable<? extends SimpleVFile> c) {
-        for(SimpleVFile file : c) {
+        for (SimpleVFile file : c) {
             security.add(data, file);
         }
         return this;
     }
 
     @Override
-    public void remove(SimpleVFile file) {data.remove(file);}
+    public void remove(SimpleVFile file) {
+        data.remove(file);
+    }
 
     @Override
-    public void removeAll(Iterable<? extends SimpleVFile> files) {data.removeAll(files);}
+    public void removeAll(Iterable<? extends SimpleVFile> files) {
+        data.removeAll(files);
+    }
 
     @Override
-    public void extract(File dir) throws IOException {data.extract(dir);}
+    public void extract(File dir) throws IOException {
+        data.extract(dir);
+    }
 
     @Override
-    public void fileAdded(SimpleVFile f) {data.fileAdded(f);}
+    public void fileAdded(SimpleVFile f) {
+        data.fileAdded(f);
+    }
 
     @Override
-    public void fileModified(SimpleVFile f) {data.fileModified(f);}
+    public void fileModified(SimpleVFile f) {
+        data.fileModified(f);
+    }
 
     @Override
-    public void fileRemoved(SimpleVFile f) {data.fileRemoved(f);}
+    public void fileRemoved(SimpleVFile f) {
+        data.fileRemoved(f);
+    }
 
     @Override
     public List<SimpleVFile> find(String search) {
@@ -178,24 +230,34 @@ public class SecurityAdapter extends SimpleVFile {
     }
 
     @Override
-    public Icon getIcon() {return data.getIcon();}
+    public Icon getIcon() {
+        return data.getIcon();
+    }
 
     @Override
-    public String group() {return data.group();}
+    public String group() {
+        return data.group();
+    }
 
     @Override
-    public String owner() {return data.owner();}
+    public String owner() {
+        return data.owner();
+    }
 
     @Override
-    public String toString() {return data.toString();}
+    public String toString() {
+        return data.toString();
+    }
 
     private SecurityAdapter wrap(final SimpleVFile simpleVFile) {
-        if(simpleVFile == null) return null;
+        if (simpleVFile == null) return null;
         return new SecurityAdapter(simpleVFile, security);
     }
 
     @Override
-    public String getName() {return data.getName();}
+    public String getName() {
+        return data.getName();
+    }
 
     @Override
     public InputStream openStream() {

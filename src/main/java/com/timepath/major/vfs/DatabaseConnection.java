@@ -35,8 +35,8 @@ public class DatabaseConnection extends JDBCFS {
 
     @Override
     public SimpleVFile get(final String name) {
-        for(SimpleVFile f : list()) {
-            if(name.equals(f.getName())) {
+        for (SimpleVFile f : list()) {
+            if (name.equals(f.getName())) {
                 return f;
             }
         }
@@ -55,16 +55,16 @@ public class DatabaseConnection extends JDBCFS {
             PreparedStatement stmt = conn.prepareStatement("SELECT name, uri, mtime FROM children(?);");
             stmt.setString(1, path);
             ResultSet rs = stmt.executeQuery();
-            while(rs.next()) {
+            while (rs.next()) {
                 String name = rs.getString("name");
                 String uri = rs.getString("uri");
                 Timestamp mtimeRaw = rs.getTimestamp("mtime");
                 long mtime = mtimeRaw == null ? System.currentTimeMillis() : mtimeRaw.getTime();
-                LOG.log(Level.FINE, "{0} -> {1}", new Object[] { name, uri });
+                LOG.log(Level.FINE, "{0} -> {1}", new Object[]{name, uri});
                 files.add(new DatabaseFile(path + "/" + name, name, uri, mtime));
             }
             rs.close();
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             LOG.log(Level.SEVERE, null, e);
         }
         return files;
@@ -75,7 +75,7 @@ public class DatabaseConnection extends JDBCFS {
         private final String name;
         private final String path;
         private final String uri;
-        private       long   mtime;
+        private long mtime;
 
         DatabaseFile(String path, String name, String uri, long mtime) {
             this.path = path;
@@ -91,14 +91,14 @@ public class DatabaseConnection extends JDBCFS {
 
         @Override
         public InputStream openStream() {
-            if(uri == null) return null;
+            if (uri == null) return null;
             try {
                 return new BufferedInputStream(new URI(uri).toURL().openStream());
-            } catch(FileNotFoundException e) {
+            } catch (FileNotFoundException e) {
                 LOG.log(Level.SEVERE, "File not found", e);
-            } catch(IOException e) {
+            } catch (IOException e) {
                 LOG.log(Level.SEVERE, "Other IO error", e);
-            } catch(URISyntaxException e) {
+            } catch (URISyntaxException e) {
                 LOG.log(Level.SEVERE, "Bad URI", e);
             }
             return null;
@@ -106,16 +106,16 @@ public class DatabaseConnection extends JDBCFS {
 
         @Override
         public long length() {
-            if(uri == null) return list().size(); // Directory
+            if (uri == null) return list().size(); // Directory
             try {
                 URI u = new URI(uri);
                 try {
                     int length = u.toURL().openConnection().getContentLength();
-                    if(length >= 0) return length;
-                } catch(IOException e) {
+                    if (length >= 0) return length;
+                } catch (IOException e) {
                     LOG.log(Level.SEVERE, "Bad URL", e);
                 }
-            } catch(URISyntaxException e) {
+            } catch (URISyntaxException e) {
                 LOG.log(Level.SEVERE, "Bad URI", e);
             }
             return super.length();
@@ -128,8 +128,8 @@ public class DatabaseConnection extends JDBCFS {
 
         @Override
         public SimpleVFile get(final String name) {
-            for(SimpleVFile f : list()) {
-                if(name.equals(f.getName())) {
+            for (SimpleVFile f : list()) {
+                if (name.equals(f.getName())) {
                     return f;
                 }
             }
