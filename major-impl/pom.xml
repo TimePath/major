@@ -4,20 +4,16 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.timepath</groupId>
-        <artifactId>super</artifactId>
+        <artifactId>major</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>major</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <artifactId>major-impl</artifactId>
     <packaging>pom</packaging>
 
     <modules>
-        <module>java/vfs-jdbc-connector</module>
-        <module>java/server</module>
-        <module>java/client</module>
-        <module>csharp</module>
-        <module>protobuf</module>
-        <module>major-impl</module>
+        <module>android</module>
+        <module>major-server</module>
     </modules>
+
 </project>
