@@ -42,7 +42,7 @@ public abstract class SecurityController {
      * @param file The file
      * @return Potentially modified {@code file.list()}
      */
-    @Nullable
+    @NotNull
     public Collection<? extends SimpleVFile> list(@NotNull final SimpleVFile file) {
         return file.list();
     }

@@ -89,6 +89,7 @@ public class DatabaseConnection extends JDBCFS {
             this.mtime = mtime;
         }
 
+        @NotNull
         @Override
         public String getName() {
             return name;

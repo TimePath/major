@@ -69,7 +69,7 @@ public class SecurityAdapter extends SimpleVFile {
         return wrap(data.getParent());
     }
 
-    @Nullable
+    @NotNull
     @Override
     public Collection<? extends SimpleVFile> list() {
         return wrap(security.list(data));
@@ -81,9 +81,8 @@ public class SecurityAdapter extends SimpleVFile {
      * @param unwrapped A collection of files to be decorated with the current security settings
      * @return The original list, decorated
      */
-    @Nullable
-    private List<SimpleVFile> wrap(@Nullable final Collection<? extends SimpleVFile> unwrapped) {
-        if (unwrapped == null) return null;
+    @NotNull
+    private List<SimpleVFile> wrap(@NotNull final Collection<? extends SimpleVFile> unwrapped) {
         @NotNull List<SimpleVFile> wrapped = new LinkedList<>();
         for (SimpleVFile v : unwrapped) {
             wrapped.add(wrap(v));
@@ -177,6 +176,7 @@ public class SecurityAdapter extends SimpleVFile {
      * This method intentionally does not delegate
      * {@inheritDoc}
      */
+    @Override
     @SuppressWarnings("EmptyMethod")
     public boolean setParent(SimpleVFile newParent) {
         return super.setParent(newParent);
@@ -256,7 +256,7 @@ public class SecurityAdapter extends SimpleVFile {
         return data.owner();
     }
 
-    @Nullable
+    @NotNull
     @Override
     public String toString() {
         return data.toString();
@@ -268,7 +268,7 @@ public class SecurityAdapter extends SimpleVFile {
         return new SecurityAdapter(simpleVFile, security);
     }
 
-    @Nullable
+    @NotNull
     @Override
     public String getName() {
         return data.getName();
