@@ -13,11 +13,9 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>java/vfs-jdbc-connector</module>
-        <module>java/server</module>
-        <module>java/client</module>
         <module>csharp</module>
         <module>protobuf</module>
-        <module>major-impl</module>
+        <module>android</module>
+        <module>server</module>
     </modules>
 </project>
