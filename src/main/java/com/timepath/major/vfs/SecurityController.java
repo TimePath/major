@@ -1,6 +1,8 @@
 package com.timepath.major.vfs;
 
 import com.timepath.vfs.SimpleVFile;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.InputStream;
 import java.util.Collection;
@@ -19,7 +21,8 @@ public abstract class SecurityController {
      * @param file The requested file
      * @return Potentially modified {@code file}
      */
-    public InputStream openStream(final SimpleVFile file) {
+    @Nullable
+    public InputStream openStream(@NotNull final SimpleVFile file) {
         return file.openStream();
     }
 
@@ -29,7 +32,7 @@ public abstract class SecurityController {
      * @param parent The parent file
      * @param file   The file
      */
-    public void add(final SimpleVFile parent, final SimpleVFile file) {
+    public void add(@NotNull final SimpleVFile parent, final SimpleVFile file) {
         parent.add(file);
     }
 
@@ -39,7 +42,8 @@ public abstract class SecurityController {
      * @param file The file
      * @return Potentially modified {@code file.list()}
      */
-    public Collection<? extends SimpleVFile> list(final SimpleVFile file) {
+    @Nullable
+    public Collection<? extends SimpleVFile> list(@NotNull final SimpleVFile file) {
         return file.list();
     }
 

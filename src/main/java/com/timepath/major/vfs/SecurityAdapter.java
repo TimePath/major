@@ -2,6 +2,8 @@ package com.timepath.major.vfs;
 
 import com.timepath.vfs.FileChangeListener;
 import com.timepath.vfs.SimpleVFile;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.io.File;
@@ -61,11 +63,13 @@ public class SecurityAdapter extends SimpleVFile {
         return data.exists();
     }
 
+    @Nullable
     @Override
     public SimpleVFile getParent() {
         return wrap(data.getParent());
     }
 
+    @Nullable
     @Override
     public Collection<? extends SimpleVFile> list() {
         return wrap(security.list(data));
@@ -77,20 +81,23 @@ public class SecurityAdapter extends SimpleVFile {
      * @param unwrapped A collection of files to be decorated with the current security settings
      * @return The original list, decorated
      */
-    private List<SimpleVFile> wrap(final Collection<? extends SimpleVFile> unwrapped) {
+    @Nullable
+    private List<SimpleVFile> wrap(@Nullable final Collection<? extends SimpleVFile> unwrapped) {
         if (unwrapped == null) return null;
-        List<SimpleVFile> wrapped = new LinkedList<>();
+        @NotNull List<SimpleVFile> wrapped = new LinkedList<>();
         for (SimpleVFile v : unwrapped) {
             wrapped.add(wrap(v));
         }
         return wrapped;
     }
 
+    @Nullable
     @Override
     public SimpleVFile get(String name) {
         return wrap(security.get(data.get(name)));
     }
 
+    @Nullable
     @Override
     public String getPath() {
         return data.getPath();
@@ -175,19 +182,22 @@ public class SecurityAdapter extends SimpleVFile {
         return super.setParent(newParent);
     }
 
+    @Nullable
     @Override
     public SimpleVFile query(String path) {
         return wrap(data.query(path));
     }
 
+    @NotNull
     @Override
     public SimpleVFile add(SimpleVFile file) {
         security.add(data, file);
         return this;
     }
 
+    @NotNull
     @Override
-    public SimpleVFile addAll(Iterable<? extends SimpleVFile> c) {
+    public SimpleVFile addAll(@NotNull Iterable<? extends SimpleVFile> c) {
         for (SimpleVFile file : c) {
             security.add(data, file);
         }
@@ -200,7 +210,7 @@ public class SecurityAdapter extends SimpleVFile {
     }
 
     @Override
-    public void removeAll(Iterable<? extends SimpleVFile> files) {
+    public void removeAll(@NotNull Iterable<? extends SimpleVFile> files) {
         data.removeAll(files);
     }
 
@@ -224,11 +234,13 @@ public class SecurityAdapter extends SimpleVFile {
         data.fileRemoved(f);
     }
 
+    @Nullable
     @Override
     public List<SimpleVFile> find(String search) {
         return wrap(data.find(search));
     }
 
+    @Nullable
     @Override
     public Icon getIcon() {
         return data.getIcon();
@@ -244,16 +256,19 @@ public class SecurityAdapter extends SimpleVFile {
         return data.owner();
     }
 
+    @Nullable
     @Override
     public String toString() {
         return data.toString();
     }
 
-    private SecurityAdapter wrap(final SimpleVFile simpleVFile) {
+    @Nullable
+    private SecurityAdapter wrap(@Nullable final SimpleVFile simpleVFile) {
         if (simpleVFile == null) return null;
         return new SecurityAdapter(simpleVFile, security);
     }
 
+    @Nullable
     @Override
     public String getName() {
         return data.getName();

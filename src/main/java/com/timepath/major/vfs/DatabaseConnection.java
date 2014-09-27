@@ -2,6 +2,8 @@ package com.timepath.major.vfs;
 
 import com.timepath.vfs.SimpleVFile;
 import com.timepath.vfs.jdbc.JDBCFS;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.BufferedInputStream;
 import java.io.FileNotFoundException;
@@ -29,13 +31,14 @@ public class DatabaseConnection extends JDBCFS {
 
     private static final Logger LOG = Logger.getLogger(DatabaseConnection.class.getName());
 
-    public DatabaseConnection(String url) throws SQLException {
+    public DatabaseConnection(@NotNull String url) throws SQLException {
         super(url);
     }
 
+    @Nullable
     @Override
-    public SimpleVFile get(final String name) {
-        for (SimpleVFile f : list()) {
+    public SimpleVFile get(@NotNull final String name) {
+        for (@NotNull SimpleVFile f : list()) {
             if (name.equals(f.getName())) {
                 return f;
             }
@@ -43,14 +46,16 @@ public class DatabaseConnection extends JDBCFS {
         return null;
     }
 
+    @NotNull
     @Override
     public Collection<? extends SimpleVFile> list() {
         return list("");
     }
 
+    @NotNull
     private Collection<? extends SimpleVFile> list(String path) {
         LOG.log(Level.FINE, "Children(''{0}'')", path);
-        LinkedList<DatabaseFile> files = new LinkedList<>();
+        @NotNull LinkedList<DatabaseFile> files = new LinkedList<>();
         try {
             PreparedStatement stmt = conn.prepareStatement("SELECT name, uri, mtime FROM children(?);");
             stmt.setString(1, path);
@@ -89,6 +94,7 @@ public class DatabaseConnection extends JDBCFS {
             return name;
         }
 
+        @Nullable
         @Override
         public InputStream openStream() {
             if (uri == null) return null;
@@ -108,7 +114,7 @@ public class DatabaseConnection extends JDBCFS {
         public long length() {
             if (uri == null) return list().size(); // Directory
             try {
-                URI u = new URI(uri);
+                @NotNull URI u = new URI(uri);
                 try {
                     int length = u.toURL().openConnection().getContentLength();
                     if (length >= 0) return length;
@@ -121,14 +127,16 @@ public class DatabaseConnection extends JDBCFS {
             return super.length();
         }
 
+        @NotNull
         @Override
         public Collection<? extends SimpleVFile> list() {
             return DatabaseConnection.this.list(path);
         }
 
+        @Nullable
         @Override
-        public SimpleVFile get(final String name) {
-            for (SimpleVFile f : list()) {
+        public SimpleVFile get(@NotNull final String name) {
+            for (@NotNull SimpleVFile f : list()) {
                 if (name.equals(f.getName())) {
                     return f;
                 }
