@@ -1,7 +1,7 @@
 package com.timepath.major.vfs;
 
 import com.timepath.vfs.SimpleVFile;
-import com.timepath.vfs.jdbc.JDBCFS;
+import com.timepath.vfs.consumer.jdbc.JDBCFS;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
