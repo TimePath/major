@@ -17,5 +17,6 @@
         <module>protobuf</module>
         <module>android</module>
         <module>server</module>
+        <module>vfs-jdbc</module>
     </modules>
 </project>
